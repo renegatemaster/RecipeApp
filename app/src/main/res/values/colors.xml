@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="backgroundMain">#F4FAFF</color>
+    <color name="catsBtnColor">#525DC0</color>
+    <color name="favsBtnColor">#E13E3E</color>
+    <color name="statusBarColor">#001018</color>
+    <color name="navBarColor">#8E8E8E</color>
 </resources>
