@@ -31,6 +31,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/btnCategories"
             style="@style/StyleNavButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,6 +40,7 @@
             android:text="@string/categories" />
 
         <Button
+            android:id="@+id/btnFavorites"
             style="@style/StyleNavButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
