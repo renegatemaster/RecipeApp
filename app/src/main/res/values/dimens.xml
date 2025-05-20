@@ -3,5 +3,6 @@
     
     <dimen name="basicIndentation">16dp</dimen>
     <dimen name="halfBasicIndentation">8dp</dimen>
+    <dimen name="basicCornerRadius">8dp</dimen>
 
 </resources>
