@@ -6,9 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundMain"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mainContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/halfBasicIndentation"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/basicIndentation"
@@ -19,21 +31,21 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            style="@style/StyleNavButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/categories"
-            style="@style/StyleNavButton"
+            android:layout_weight="1"
             android:backgroundTint="@color/catsBtnColor"
-            android:layout_weight="1" />
+            android:text="@string/categories" />
 
         <Button
+            style="@style/StyleNavButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/favorites"
-            style="@style/StyleNavButton"
-            android:backgroundTint="@color/favsBtnColor"
             android:layout_marginStart="@dimen/halfBasicIndentation"
             android:layout_weight="1"
+            android:backgroundTint="@color/favsBtnColor"
+            android:text="@string/favorites"
             app:icon="@drawable/ic_heart_empty"
             app:iconGravity="textEnd" />
 
