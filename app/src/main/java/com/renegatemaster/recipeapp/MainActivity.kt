@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.renegatemaster.recipeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,9 +23,23 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.mainContainer, CategoriesListFragment())
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
+        with(binding) {
+            btnCategories.setOnClickListener {
+                fragmentManager.commit {
+                    replace<CategoriesListFragment>(R.id.mainContainer)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+            }
+
+            btnFavorites.setOnClickListener {
+                fragmentManager.commit {
+                    replace<FavoritesFragment>(R.id.mainContainer)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+            }
+        }
+
     }
 }
