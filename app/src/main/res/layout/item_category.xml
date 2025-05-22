@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="156dp"
-    android:layout_height="220dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="@dimen/basicCornerRadius"
     android:layout_marginHorizontal="@dimen/halfBasicIndentation"
     android:clickable="true"
     android:focusable="true"
     android:background="?attr/selectableItemBackground">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:contentDescription="category card image"
+            android:layout_marginBottom="@dimen/halfBasicIndentation"
+            tools:src="@tools:sample/avatars"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:layout_marginStart="@dimen/halfBasicIndentation"
+            android:layout_marginEnd="@dimen/halfBasicIndentation"
+            android:layout_marginBottom="@dimen/halfBasicIndentation"
+            tools:text="@tools:sample/lorem"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/halfBasicIndentation"
+            android:layout_marginEnd="@dimen/halfBasicIndentation"
+            android:layout_marginBottom="@dimen/halfBasicIndentation"
+            tools:text="@tools:sample/lorem/random"/>
+
+    </LinearLayout>
+
 
 </androidx.cardview.widget.CardView>
