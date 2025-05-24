@@ -13,7 +13,7 @@
         android:layout_height="224dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivCategory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -21,18 +21,16 @@
             android:src="@drawable/bcg_categories" />
 
         <TextView
+            android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_rounded_main"
-            android:fontFamily="@font/montserrat_alternates_semi_bold"
             android:gravity="center"
             android:text="@string/categories"
-            android:textAllCaps="true"
-            android:textColor="@color/textColor"
-            android:textSize="20sp"
+            style="@style/StyleTitle20"
             android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCategory"
+            app:layout_constraintStart_toStartOf="@+id/ivCategory"
             android:layout_marginStart="@dimen/basicIndentation"
             android:layout_marginBottom="@dimen/basicIndentation"/>
 
