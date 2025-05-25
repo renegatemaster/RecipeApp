@@ -26,11 +26,11 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
         with(holder.binding) {
             val drawable =
                 try {
-                    val inputStream = root.context.assets.open(category.imageUrl)
-                    Drawable.createFromStream(inputStream, null,)
-                        .also { inputStream.close() }
+                    root.context.assets.open(category.imageUrl).use { inputStream ->
+                        Drawable.createFromStream(inputStream, null)
+                    }
                 } catch (e: Exception) {
-                    Log.d("!!!", "Image not found: ${category.imageUrl}")
+                    Log.d("!!!", "Image not found: ${category.imageUrl}", e)
                     null
                 }
             ivItemCategory.setImageDrawable(drawable)

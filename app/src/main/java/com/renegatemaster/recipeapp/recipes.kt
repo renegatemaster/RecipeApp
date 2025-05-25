@@ -8,7 +8,7 @@ object STUB {
             0,
             "Бургеры",
             "Рецепты всех популярных видов бургеров",
-            "burger1.png"
+            "burger.png"
         ),
         Category(
             1,

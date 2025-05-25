@@ -16,23 +16,23 @@
             android:id="@+id/ivCategory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
             android:contentDescription="categories background image"
+            android:scaleType="centerCrop"
             android:src="@drawable/bcg_categories" />
 
         <TextView
             android:id="@+id/tvCategory"
+            style="@style/StyleTitle20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basicIndentation"
+            android:layout_marginBottom="@dimen/basicIndentation"
             android:background="@drawable/shape_rounded_main"
             android:gravity="center"
-            android:text="@string/categories"
-            style="@style/StyleTitle20"
             android:padding="10dp"
+            android:text="@string/categories"
             app:layout_constraintBottom_toBottomOf="@+id/ivCategory"
-            app:layout_constraintStart_toStartOf="@+id/ivCategory"
-            android:layout_marginStart="@dimen/basicIndentation"
-            android:layout_marginBottom="@dimen/basicIndentation"/>
+            app:layout_constraintStart_toStartOf="@+id/ivCategory" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -40,12 +40,11 @@
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_category"
+        android:layout_marginHorizontal="@dimen/halfBasicIndentation"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        android:layout_marginHorizontal="@dimen/halfBasicIndentation"
-        android:layout_marginVertical="@dimen/basicIndentation"/>
+        tools:itemCount="6"
+        tools:listitem="@layout/item_category" />
 
 
 </LinearLayout>
