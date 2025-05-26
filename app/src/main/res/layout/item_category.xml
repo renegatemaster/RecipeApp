@@ -1,45 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="@dimen/basicCornerRadius"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/halfBasicIndentation"
+    android:layout_marginTop="@dimen/basicIndentation"
     android:clickable="true"
     android:focusable="true"
-    android:background="?attr/selectableItemBackground">
-    
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/basicCornerRadius"
+    app:cardPreventCornerOverlap="true">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/ivItemCategory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:layout_height="130dp"
+            android:layout_marginBottom="@dimen/halfBasicIndentation"
             android:contentDescription="category card image"
-            android:layout_marginBottom="@dimen/halfBasicIndentation"
-            tools:src="@tools:sample/avatars"/>
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
+            android:id="@+id/tvItemCategoryName"
+            style="@style/StyleHeader14"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
-            android:textAllCaps="true"
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfBasicIndentation"
             android:layout_marginEnd="@dimen/halfBasicIndentation"
             android:layout_marginBottom="@dimen/halfBasicIndentation"
-            tools:text="@tools:sample/lorem"/>
+            tools:text="@tools:sample/lorem" />
 
         <TextView
+            android:id="@+id/tvItemCategoryDescription"
+            style="@style/StyleDescription12"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfBasicIndentation"
             android:layout_marginEnd="@dimen/halfBasicIndentation"
             android:layout_marginBottom="@dimen/halfBasicIndentation"
-            tools:text="@tools:sample/lorem/random"/>
+            tools:text="@tools:sample/lorem/random" />
 
     </LinearLayout>
 
