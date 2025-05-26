@@ -2,4 +2,6 @@
     <string name="app_name" translatable="false">RecipeApp</string>
     <string name="categories">категории</string>
     <string name="favorites">избранное</string>
+    <string name="category_card_image">картинка карточки категории</string>
+    <string name="categories_background_image">картинка фона категории</string>
 </resources>

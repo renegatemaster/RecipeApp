@@ -11,6 +11,16 @@ import com.renegatemaster.recipeapp.entities.Category
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
+    private var itemClickListener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     class ViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,6 +46,9 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
             ivItemCategory.setImageDrawable(drawable)
             tvItemCategoryName.text = category.title
             tvItemCategoryDescription.text = category.description
+            cvItemCategory.setOnClickListener {
+                itemClickListener?.onItemClick()
+            }
         }
     }
 }
