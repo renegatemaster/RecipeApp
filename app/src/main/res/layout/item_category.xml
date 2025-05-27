@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvItemCategory"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/halfBasicIndentation"
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginBottom="@dimen/halfBasicIndentation"
-            android:contentDescription="category card image"
+            android:contentDescription="@string/category_card_image"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 
