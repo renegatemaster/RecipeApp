@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -53,23 +54,17 @@ class CategoriesListFragment : Fragment() {
             .firstOrNull() { it.id == categoryId }
             ?: return
 
-        val categoryName = category.id
+        val categoryName = category.title
         val categoryImageUrl = category.imageUrl
 
-        object BundleKeys {
-            const val ARG_CATEGORY_ID = "ARG_CATEGORY_ID"
-            const val ARG_CATEGORY_NAME = "ARG_CATEGORY_NAME"
-            const val ARG_CATEGORY_IMAGE_URL = "ARG_CATEGORY_IMAGE_URL"
-        }
+        val bundle = bundleOf(
+            "ARG_CATEGORY_ID" to categoryId,
+            "ARG_CATEGORY_NAME" to categoryName,
+            "ARG_CATEGORY_IMAGE_URL" to categoryImageUrl,
+        )
 
-        val bundle = Bundle().apply {
-            putInt(BundleKeys.ARG_CATEGORY_ID, categoryId)
-            putInt(BundleKeys.ARG_CATEGORY_NAME, categoryName)
-            putString(BundleKeys.ARG_CATEGORY_IMAGE_URL, categoryImageUrl)
-        }
-
-        this.activity?.supportFragmentManager?.commit {
-            replace<RecipesListFragment>(R.id.mainContainer)
+        parentFragmentManager.commit {
+            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
             setReorderingAllowed(true)
             addToBackStack(null)
         }
