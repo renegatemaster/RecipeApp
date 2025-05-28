@@ -275,4 +275,6 @@ object STUB {
             emptyList<Recipe>()
         }
     }
+
+    fun getRecipeById(recipeId: Int): Recipe? = burgerRecipes.firstOrNull { it.id == recipeId }
 }
