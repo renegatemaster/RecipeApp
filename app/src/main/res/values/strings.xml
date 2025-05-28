@@ -4,4 +4,5 @@
     <string name="favorites">favorites</string>
     <string name="category_card_image">category card image</string>
     <string name="categories_background_image">categories background image</string>
+    <string name="recipes_background_image">recipes background image</string>
 </resources>

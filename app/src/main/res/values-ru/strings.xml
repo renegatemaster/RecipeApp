@@ -4,4 +4,5 @@
     <string name="favorites">избранное</string>
     <string name="category_card_image">картинка карточки категории</string>
     <string name="categories_background_image">картинка фона категории</string>
+    <string name="recipes_background_image">картинка фона рецептов</string>
 </resources>

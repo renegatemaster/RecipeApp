@@ -1,10 +1,14 @@
 package com.renegatemaster.recipeapp
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.renegatemaster.recipeapp.databinding.FragmentListRecipesBinding
 
 class RecipesListFragment : Fragment() {
@@ -28,14 +32,60 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val bundle = arguments
         argCategoryId = bundle?.getInt("ARG_CATEGORY_ID", 0)
-        argCategoryName = bundle?.getString("ARG_CATEGORY_NAme")
+        argCategoryName = bundle?.getString("ARG_CATEGORY_NAME")
         argCategoryImageUrl = bundle?.getString("ARG_CATEGORY_IMAGE_URL")
+
+        initRecycler()
+
+        val drawable = try {
+            argCategoryImageUrl?.let {
+                binding.root.context.assets.open(it).use { inputStream ->
+                    Drawable.createFromStream(inputStream, null)
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("!!!", "Image not found: $argCategoryImageUrl", e)
+            null
+        }
+        with(binding) {
+            ivRecipes.setImageDrawable(drawable)
+            tvRecipesTitle.text = argCategoryName
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initRecycler() {
+        val adapter = argCategoryId?.let {
+            RecipesListAdapter(STUB.getRecipesByCategoryId(it))
+        } ?: return
+        adapter.setOnItemClickListener(
+            object : RecipesListAdapter.OnItemClickListener {
+                override fun onItemClick(recipeId: Int) {
+                    openRecipeByRecipeId(recipeId)
+                }
+            }
+        )
+        binding.rvRecipes.adapter = adapter
+    }
+
+    private fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe = argCategoryId?.let {
+            STUB.getRecipesByCategoryId(it)
+                .firstOrNull { recipe -> recipe.id == recipeId }
+                ?: return
+        }
+
+        parentFragmentManager.commit {
+            replace<RecipeFragment>(R.id.mainContainer)
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
     }
 }
