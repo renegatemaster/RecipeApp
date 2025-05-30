@@ -5,4 +5,8 @@
     <string name="category_card_image">category card image</string>
     <string name="categories_background_image">categories background image</string>
     <string name="recipes_background_image">recipes background image</string>
+    <string name="recipe_background_image">recipe background image</string>
+    <string name="ingredients">ingredients</string>
+    <string name="portions">Portions:</string>
+    <string name="cooking_method">cooking method</string>
 </resources>

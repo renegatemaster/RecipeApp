@@ -9,4 +9,5 @@
     <color name="navBarColor">#8E8E8E</color>
     <color name="textColor">#5F3678</color>
     <color name="descriptionColor">#666666</color>
+    <color name="dividerColor">#F5F5F5</color>
 </resources>

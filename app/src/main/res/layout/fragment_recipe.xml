@@ -1,21 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundMain"
     tools:context=".RecipeFragment">
 
-    <TextView
-        android:id="@+id/tvRecipeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipe Fragment"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:contentDescription="@string/recipe_background_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tvRecipeTitle"
+                style="@style/StyleTitle20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/basicIndentation"
+                android:layout_marginBottom="@dimen/basicIndentation"
+                android:background="@drawable/shape_rounded_main"
+                android:gravity="center"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivRecipe"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@tools:sample/lorem" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/basicIndentation"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/StyleTitle20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/halfIngredientIndentation"
+                android:background="@drawable/shape_rounded_main"
+                android:gravity="center"
+                android:text="@string/ingredients" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/halfIngredientIndentation"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/StylePortions16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/portions" />
+
+                <TextView
+                    android:id="@+id/tvPortionsQuantity"
+                    style="@style/StylePortions16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/halfIngredientIndentation"
+                    tools:text="1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/basicIndentation"
+            android:layout_marginBottom="@dimen/basicIndentation"
+            android:background="@drawable/shape_rounded_rv_ingredients"
+            android:paddingVertical="@dimen/quarterBasicIndentation"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="1"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_ingredient" />
+
+        <TextView
+            style="@style/StyleTitle20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basicIndentation"
+            android:layout_marginBottom="@dimen/basicIndentation"
+            android:background="@drawable/shape_rounded_main"
+            android:gravity="center"
+            android:text="@string/cooking_method" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMethods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/basicIndentation"
+            android:layout_marginBottom="@dimen/halfBasicIndentation"
+            android:background="@drawable/shape_rounded_rv_ingredients"
+            android:paddingVertical="@dimen/quarterBasicIndentation"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="1"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_method" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
