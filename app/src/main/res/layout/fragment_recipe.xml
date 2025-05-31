@@ -80,6 +80,14 @@
 
             </LinearLayout>
 
+            <SeekBar
+                android:id="@+id/sbPortionsQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:max="5"
+                android:min="1"
+                android:progress="3" />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
@@ -64,6 +65,7 @@ class RecipeFragment : Fragment() {
 
             ivRecipe.setImageDrawable(drawable)
             tvRecipeTitle.text = recipe?.title
+            tvPortionsQuantity.text = "3"
         }
     }
 
@@ -75,6 +77,25 @@ class RecipeFragment : Fragment() {
             }
             setDivider(rvIngredients)
             setDivider(rvMethods)
+
+            sbPortionsQuantity.setOnSeekBarChangeListener(
+                object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        tvPortionsQuantity.text = progress.toString()
+                        (rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(progress)
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+                }
+            )
         }
     }
 
