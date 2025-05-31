@@ -10,6 +10,8 @@ import com.renegatemaster.recipeapp.entities.Ingredient
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
+    private var quantity: Int = 3
+
     class ViewHolder(val binding: ItemIngredientBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,7 +27,19 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         val ingredient = dataSet[position]
         with(holder.binding) {
             tvItemIngredientDescription.text = ingredient.description
-            tvItemIngredientQuantity.text = "${ingredient.quantity} ${ingredient.unitOfMeasure}"
+            val overallIngredientQuantity = ingredient.quantity.toDouble() * quantity
+            val ingredientQuantity = if (overallIngredientQuantity % 1 != 0.0) {
+                "%.1f".format(overallIngredientQuantity)
+            } else {
+                overallIngredientQuantity.toInt().toString()
+            }
+            tvItemIngredientQuantity.text = "$ingredientQuantity ${ingredient.unitOfMeasure}"
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateIngredients(progress: Int) {
+        quantity = progress
+        notifyDataSetChanged()
     }
 }
