@@ -5,4 +5,8 @@
     <string name="category_card_image">картинка карточки категории</string>
     <string name="categories_background_image">картинка фона категории</string>
     <string name="recipes_background_image">картинка фона рецептов</string>
+    <string name="recipe_background_image">картинка фона рецепта</string>
+    <string name="ingredients">ингредиенты</string>
+    <string name="portions">Порции:</string>
+    <string name="cooking_method">способ приготовления</string>
 </resources>

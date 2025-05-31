@@ -33,4 +33,21 @@
         <item name="android:textColor">@color/descriptionColor</item>
     </style>
 
+    <style name="StyleIngredient14" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/montserrat_light</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="StyleMethod14" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/montserrat_light</item>
+    </style>
+
+    <style name="StylePortions16" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat_alternates_semi_bold</item>
+        <item name="android:textColor">@color/descriptionColor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
