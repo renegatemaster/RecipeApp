@@ -46,7 +46,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/basicIndentation"
+            android:layout_marginHorizontal="@dimen/basicIndentation"
+            android:layout_marginTop="@dimen/basicIndentation"
+            android:layout_marginBottom="@dimen/halfIngredientIndentation"
             android:orientation="vertical">
 
             <TextView
@@ -61,7 +63,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/halfIngredientIndentation"
                 android:orientation="horizontal">
 
                 <TextView
@@ -80,15 +81,17 @@
 
             </LinearLayout>
 
-            <SeekBar
-                android:id="@+id/sbPortionsQuantity"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:max="5"
-                android:min="1"
-                android:progress="3" />
-
         </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sbPortionsQuantity"
+            style="@style/styleSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basicIndentation"
+            android:max="5"
+            android:min="1"
+            android:progress="3" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"
