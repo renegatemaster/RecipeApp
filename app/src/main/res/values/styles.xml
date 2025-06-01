@@ -35,13 +35,13 @@
 
     <style name="StyleIngredient14" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_light</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="StyleMethod14" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_light</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 
     <style name="StylePortions16" parent="TextAppearance.AppCompat">

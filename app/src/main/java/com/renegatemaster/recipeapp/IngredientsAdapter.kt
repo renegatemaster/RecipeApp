@@ -27,8 +27,10 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         val ingredient = dataSet[position]
         with(holder.binding) {
             tvItemIngredientDescription.text = ingredient.description
-            val overallIngredientQuantity = ingredient.quantity.toDouble() * quantity
-            val ingredientQuantity = if (overallIngredientQuantity % 1 != 0.0) {
+            val overallIngredientQuantity = ingredient.quantity.toBigDecimal() * quantity.toBigDecimal()
+            val ingredientQuantity = if (
+                overallIngredientQuantity % 1.toBigDecimal() != 0.0.toBigDecimal()
+                ) {
                 "%.1f".format(overallIngredientQuantity)
             } else {
                 overallIngredientQuantity.toInt().toString()
