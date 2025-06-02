@@ -9,4 +9,7 @@
     <string name="ingredients">ingredients</string>
     <string name="portions">Portions:</string>
     <string name="cooking_method">cooking method</string>
+    <string name="add_to_favorites_button">add to favorites button</string>
+    <string name="recipe_steps">recipe steps</string>
+    <string name="list_of_ingredients">list of ingredients</string>
 </resources>

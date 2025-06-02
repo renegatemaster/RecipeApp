@@ -27,6 +27,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
 
+            <ImageButton
+                android:id="@+id/btnAddToFavorite"
+                android:contentDescription="@string/add_to_favorites_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/basicIndentation"
+                android:layout_marginEnd="@dimen/basicIndentation"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/ic_heart_empty" />
+
             <TextView
                 android:id="@+id/tvRecipeTitle"
                 style="@style/StyleTitle20"
@@ -77,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/halfIngredientIndentation"
-                    tools:text="1" />
+                    tools:text="3" />
 
             </LinearLayout>
 
@@ -95,6 +107,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"
+            android:contentDescription="@string/list_of_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/basicIndentation"
@@ -118,6 +131,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMethods"
+            android:contentDescription="@string/recipe_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/basicIndentation"

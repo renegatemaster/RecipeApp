@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.renegatemaster.recipeapp.databinding.ItemIngredientBinding
 import com.renegatemaster.recipeapp.entities.Ingredient
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
@@ -27,14 +29,11 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
         val ingredient = dataSet[position]
         with(holder.binding) {
             tvItemIngredientDescription.text = ingredient.description
-            val overallIngredientQuantity = ingredient.quantity.toBigDecimal() * quantity.toBigDecimal()
-            val ingredientQuantity = if (
-                overallIngredientQuantity % 1.toBigDecimal() != 0.0.toBigDecimal()
-                ) {
-                "%.1f".format(overallIngredientQuantity)
-            } else {
-                overallIngredientQuantity.toInt().toString()
-            }
+            val ingredientQuantity = BigDecimal(ingredient.quantity)
+                .multiply(BigDecimal(quantity))
+                .setScale(1, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .toPlainString()
             tvItemIngredientQuantity.text = "$ingredientQuantity ${ingredient.unitOfMeasure}"
         }
     }
