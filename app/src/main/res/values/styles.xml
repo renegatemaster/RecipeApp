@@ -35,19 +35,24 @@
 
     <style name="StyleIngredient14" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_light</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="StyleMethod14" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_light</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 
     <style name="StylePortions16" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/montserrat_alternates_semi_bold</item>
         <item name="android:textColor">@color/descriptionColor</item>
         <item name="android:textSize">16sp</item>
+    </style>
+    
+    <style name="styleSeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:thumb">@drawable/shape_seekbar_thumb</item>
+        <item name="android:progressDrawable">@drawable/shape_seekbar_progress</item>
     </style>
 
 </resources>

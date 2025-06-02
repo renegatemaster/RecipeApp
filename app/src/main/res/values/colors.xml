@@ -10,4 +10,5 @@
     <color name="textColor">#5F3678</color>
     <color name="descriptionColor">#666666</color>
     <color name="dividerColor">#F5F5F5</color>
+    <color name="seekBarProgressColor">#A1A9F9</color>
 </resources>
