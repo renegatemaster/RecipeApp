@@ -30,11 +30,13 @@
             <ImageButton
                 android:id="@+id/btnAddToFavorite"
                 android:contentDescription="@string/add_to_favorites_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/favoritesIconSize"
+                android:layout_height="@dimen/favoritesIconSize"
                 android:layout_marginTop="@dimen/basicIndentation"
                 android:layout_marginEnd="@dimen/basicIndentation"
-                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:background="@drawable/ic_heart_empty" />
