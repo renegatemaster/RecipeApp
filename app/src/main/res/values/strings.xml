@@ -12,4 +12,6 @@
     <string name="add_to_favorites_button">add to favorites button</string>
     <string name="recipe_steps">recipe steps</string>
     <string name="list_of_ingredients">list of ingredients</string>
+    <string name="sp_favorites_key" translatable="false">com.renegatemaster.recipeapp.SP_FAVORITES_FILE_KEY</string>
+    <string name="sp_favorites_string_set" translatable="false">STRING_SET_KEY</string>
 </resources>

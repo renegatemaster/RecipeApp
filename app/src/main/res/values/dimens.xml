@@ -10,4 +10,6 @@
 
     <dimen name="basicCornerRadius">8dp</dimen>
 
+    <dimen name="favoritesIconSize">40dp</dimen>
+
 </resources>
