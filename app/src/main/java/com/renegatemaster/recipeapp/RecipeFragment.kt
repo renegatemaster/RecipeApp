@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
 import com.renegatemaster.recipeapp.entities.Recipe
+import com.renegatemaster.recipeapp.utils.Constants
 
 class RecipeFragment : Fragment() {
 
@@ -147,12 +148,12 @@ class RecipeFragment : Fragment() {
 
     private fun saveFavorites(stringSet: Set<String>) {
         val sharedPrefs = activity?.getSharedPreferences(
-            getString(R.string.sp_favorites_key), Context.MODE_PRIVATE
+            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
         ) ?: return
 
         with(sharedPrefs.edit()) {
             putStringSet(
-                getString(R.string.sp_favorites_string_set), stringSet
+                Constants.SP_FAVORITES_STRING_SET, stringSet
             )
             apply()
         }
@@ -160,11 +161,11 @@ class RecipeFragment : Fragment() {
 
     private fun getFavorites(): HashSet<String> {
         val sharedPrefs = activity?.getSharedPreferences(
-            getString(R.string.sp_favorites_key), Context.MODE_PRIVATE
+            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
         ) ?: return hashSetOf()
 
         val stringSet = sharedPrefs.getStringSet(
-            getString(R.string.sp_favorites_string_set), hashSetOf<String>()
+            Constants.SP_FAVORITES_STRING_SET, hashSetOf<String>()
         ) ?: hashSetOf<String>()
 
         val result: HashSet<String> = HashSet(stringSet)

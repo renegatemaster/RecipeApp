@@ -49,6 +49,12 @@
         <item name="android:textColor">@color/descriptionColor</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="StylePlug16" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColor">@color/descriptionColor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     
     <style name="styleSeekBar" parent="Widget.AppCompat.SeekBar">
         <item name="android:thumb">@drawable/shape_seekbar_thumb</item>

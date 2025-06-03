@@ -277,4 +277,13 @@ object STUB {
     }
 
     fun getRecipeById(recipeId: Int): Recipe? = burgerRecipes.firstOrNull { it.id == recipeId }
+
+    fun getRecipesByIds(favoritesIds: HashSet<String>): List<Recipe> {
+        val recipes = mutableListOf<Recipe>()
+        for (id in favoritesIds) {
+            val recipe = getRecipeById(id.toInt()) ?: continue
+            recipes.add(recipe)
+        }
+        return recipes
+    }
 }
