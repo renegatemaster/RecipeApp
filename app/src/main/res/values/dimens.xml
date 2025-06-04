@@ -8,6 +8,8 @@
     <dimen name="ingredientIndentation">12dp</dimen>
     <dimen name="halfIngredientIndentation">6dp</dimen>
 
+    <dimen name="headerPadding">10dp</dimen>
+
     <dimen name="basicCornerRadius">8dp</dimen>
 
     <dimen name="favoritesIconSize">40dp</dimen>

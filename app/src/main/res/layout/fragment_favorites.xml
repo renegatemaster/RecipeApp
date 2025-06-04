@@ -30,7 +30,7 @@
             android:text="@string/favorites"
             android:background="@drawable/shape_rounded_main"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/headerPadding"
             app:layout_constraintBottom_toBottomOf="@+id/ivFavoriteRecipes"
             app:layout_constraintStart_toStartOf="parent" />
 

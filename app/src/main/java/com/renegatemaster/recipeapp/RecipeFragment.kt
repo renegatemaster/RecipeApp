@@ -68,36 +68,26 @@ class RecipeFragment : Fragment() {
             ivRecipe.setImageDrawable(drawable)
 
             with(btnAddToFavorite) {
-                background = if (inFavorites()) {
-                    context?.let {
-                        ContextCompat.getDrawable(it, R.drawable.ic_heart)
-                    }
-                } else {
-                    context?.let {
-                        ContextCompat.getDrawable(it, R.drawable.ic_heart_empty)
-                    }
-                }
+                if (isInFavorites()) {
+                    setFavoriteButtonBackground(R.drawable.ic_heart)
+                } else setFavoriteButtonBackground(R.drawable.ic_heart_empty)
 
                 setOnClickListener {
+                    val recipeId: Int = recipe?.id ?: return@setOnClickListener
                     val favoritesIds = getFavorites()
-                    if (inFavorites()) {
-                        background = context?.let {
-                            ContextCompat.getDrawable(it, R.drawable.ic_heart_empty)
-                        }
-                        favoritesIds.remove(recipe?.id.toString())
-                        saveFavorites(favoritesIds)
+                    if (isInFavorites()) {
+                        setFavoriteButtonBackground(R.drawable.ic_heart_empty)
+                        favoritesIds.remove(recipeId.toString())
                     } else {
-                        background = context?.let {
-                            ContextCompat.getDrawable(it, R.drawable.ic_heart)
-                        }
-                        favoritesIds.add(recipe?.id.toString())
-                        saveFavorites(favoritesIds)
+                        setFavoriteButtonBackground(R.drawable.ic_heart)
+                        favoritesIds.add(recipeId.toString())
                     }
+                    saveFavorites(favoritesIds)
                 }
             }
 
             tvRecipeTitle.text = recipe?.title
-            tvPortionsQuantity.text = "3"
+            tvPortionsQuantity.text = sbPortionsQuantity.progress.toString()
         }
     }
 
@@ -172,7 +162,19 @@ class RecipeFragment : Fragment() {
         return result
     }
 
-    private fun inFavorites(): Boolean {
-        return recipe?.id.toString() in getFavorites()
+    private fun isInFavorites(): Boolean {
+        return recipe?.id?.toString() in getFavorites()
+    }
+
+    private fun setFavoriteButtonBackground(drawableResId: Int) {
+        try {
+            with(binding.btnAddToFavorite) {
+                ContextCompat.getDrawable(context, drawableResId)?.let { drawable: Drawable ->
+                    background = drawable
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("!!!", "Can't set background image with id $drawableResId", e)
+        }
     }
 }
