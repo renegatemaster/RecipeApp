@@ -68,9 +68,7 @@ class RecipeFragment : Fragment() {
             ivRecipe.setImageDrawable(drawable)
 
             with(btnAddToFavorite) {
-                val favoritesIds = getFavorites()
-                val inFavorites = recipe?.id.toString() in favoritesIds
-                background = if (inFavorites) {
+                background = if (inFavorites()) {
                     context?.let {
                         ContextCompat.getDrawable(it, R.drawable.ic_heart)
                     }
@@ -81,7 +79,8 @@ class RecipeFragment : Fragment() {
                 }
 
                 setOnClickListener {
-                    if (inFavorites) {
+                    val favoritesIds = getFavorites()
+                    if (inFavorites()) {
                         background = context?.let {
                             ContextCompat.getDrawable(it, R.drawable.ic_heart_empty)
                         }
@@ -171,5 +170,9 @@ class RecipeFragment : Fragment() {
         val result: HashSet<String> = HashSet(stringSet)
 
         return result
+    }
+
+    private fun inFavorites(): Boolean {
+        return recipe?.id.toString() in getFavorites()
     }
 }
