@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
 import com.renegatemaster.recipeapp.entities.Recipe
+import com.renegatemaster.recipeapp.utils.Constants
 
 class RecipeFragment : Fragment() {
 
@@ -67,37 +68,26 @@ class RecipeFragment : Fragment() {
             ivRecipe.setImageDrawable(drawable)
 
             with(btnAddToFavorite) {
-                val favoritesIds = getFavorites()
-                val inFavorites = recipe?.id.toString() in favoritesIds
-                background = if (inFavorites) {
-                    context?.let {
-                        ContextCompat.getDrawable(it, R.drawable.ic_heart)
-                    }
-                } else {
-                    context?.let {
-                        ContextCompat.getDrawable(it, R.drawable.ic_heart_empty)
-                    }
-                }
+                if (isInFavorites()) {
+                    setFavoriteButtonBackground(R.drawable.ic_heart)
+                } else setFavoriteButtonBackground(R.drawable.ic_heart_empty)
 
                 setOnClickListener {
-                    if (inFavorites) {
-                        background = context?.let {
-                            ContextCompat.getDrawable(it, R.drawable.ic_heart_empty)
-                        }
-                        favoritesIds.remove(recipe?.id.toString())
-                        saveFavorites(favoritesIds)
+                    val recipeId: Int = recipe?.id ?: return@setOnClickListener
+                    val favoritesIds = getFavorites()
+                    if (isInFavorites()) {
+                        setFavoriteButtonBackground(R.drawable.ic_heart_empty)
+                        favoritesIds.remove(recipeId.toString())
                     } else {
-                        background = context?.let {
-                            ContextCompat.getDrawable(it, R.drawable.ic_heart)
-                        }
-                        favoritesIds.add(recipe?.id.toString())
-                        saveFavorites(favoritesIds)
+                        setFavoriteButtonBackground(R.drawable.ic_heart)
+                        favoritesIds.add(recipeId.toString())
                     }
+                    saveFavorites(favoritesIds)
                 }
             }
 
             tvRecipeTitle.text = recipe?.title
-            tvPortionsQuantity.text = "3"
+            tvPortionsQuantity.text = sbPortionsQuantity.progress.toString()
         }
     }
 
@@ -147,12 +137,12 @@ class RecipeFragment : Fragment() {
 
     private fun saveFavorites(stringSet: Set<String>) {
         val sharedPrefs = activity?.getSharedPreferences(
-            getString(R.string.sp_favorites_key), Context.MODE_PRIVATE
+            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
         ) ?: return
 
         with(sharedPrefs.edit()) {
             putStringSet(
-                getString(R.string.sp_favorites_string_set), stringSet
+                Constants.SP_FAVORITES_STRING_SET, stringSet
             )
             apply()
         }
@@ -160,15 +150,31 @@ class RecipeFragment : Fragment() {
 
     private fun getFavorites(): HashSet<String> {
         val sharedPrefs = activity?.getSharedPreferences(
-            getString(R.string.sp_favorites_key), Context.MODE_PRIVATE
+            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
         ) ?: return hashSetOf()
 
         val stringSet = sharedPrefs.getStringSet(
-            getString(R.string.sp_favorites_string_set), hashSetOf<String>()
+            Constants.SP_FAVORITES_STRING_SET, hashSetOf<String>()
         ) ?: hashSetOf<String>()
 
         val result: HashSet<String> = HashSet(stringSet)
 
         return result
+    }
+
+    private fun isInFavorites(): Boolean {
+        return recipe?.id?.toString() in getFavorites()
+    }
+
+    private fun setFavoriteButtonBackground(drawableResId: Int) {
+        try {
+            with(binding.btnAddToFavorite) {
+                ContextCompat.getDrawable(context, drawableResId)?.let { drawable: Drawable ->
+                    background = drawable
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("!!!", "Can't set background image with id $drawableResId", e)
+        }
     }
 }

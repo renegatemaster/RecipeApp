@@ -12,4 +12,5 @@
     <string name="add_to_favorites_button">кнопка добавления в избранное</string>
     <string name="recipe_steps">шаги рецепта</string>
     <string name="list_of_ingredients">список ингредиентов</string>
+    <string name="no_favorites_added_yet">Вы ещё не добавили ни одного рецепта в избранное</string>
 </resources>

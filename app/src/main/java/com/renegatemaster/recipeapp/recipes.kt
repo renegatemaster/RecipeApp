@@ -277,4 +277,8 @@ object STUB {
     }
 
     fun getRecipeById(recipeId: Int): Recipe? = burgerRecipes.firstOrNull { it.id == recipeId }
+
+    fun getRecipesByIds(favoritesIds: HashSet<String>): List<Recipe> {
+        return favoritesIds.mapNotNull { getRecipeById(it.toInt()) }
+    }
 }

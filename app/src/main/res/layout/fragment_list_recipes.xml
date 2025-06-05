@@ -29,7 +29,7 @@
             android:layout_marginBottom="@dimen/basicIndentation"
             android:background="@drawable/shape_rounded_main"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/headerPadding"
             app:layout_constraintBottom_toBottomOf="@+id/ivRecipes"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="@tools:sample/lorem" />
