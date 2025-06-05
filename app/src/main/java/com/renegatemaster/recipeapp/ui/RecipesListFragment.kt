@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,6 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.renegatemaster.recipeapp.R
+import com.renegatemaster.recipeapp.data.STUB
 import com.renegatemaster.recipeapp.databinding.FragmentListRecipesBinding
 
 class RecipesListFragment : Fragment() {

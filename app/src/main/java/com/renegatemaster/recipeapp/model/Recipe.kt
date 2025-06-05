@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp.entities
+package com.renegatemaster.recipeapp.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

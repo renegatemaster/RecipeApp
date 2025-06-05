@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.ui
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

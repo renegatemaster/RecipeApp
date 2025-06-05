@@ -1,11 +1,11 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.ui
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.renegatemaster.recipeapp.databinding.ItemIngredientBinding
-import com.renegatemaster.recipeapp.entities.Ingredient
+import com.renegatemaster.recipeapp.model.Ingredient
 import java.math.BigDecimal
 import java.math.RoundingMode
 

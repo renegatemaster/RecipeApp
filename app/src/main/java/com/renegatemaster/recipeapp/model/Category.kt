@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp.entities
+package com.renegatemaster.recipeapp.model
 
 data class Category(
     val id: Int,
