@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.ui
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -13,8 +13,9 @@ import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
-import com.renegatemaster.recipeapp.entities.Recipe
+import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
 
 class RecipeFragment : Fragment() {

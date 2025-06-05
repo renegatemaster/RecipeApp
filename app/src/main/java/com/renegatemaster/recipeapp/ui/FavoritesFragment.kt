@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -10,6 +10,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.renegatemaster.recipeapp.R
+import com.renegatemaster.recipeapp.data.STUB
 import com.renegatemaster.recipeapp.databinding.FragmentFavoritesBinding
 import com.renegatemaster.recipeapp.utils.Constants
 

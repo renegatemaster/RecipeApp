@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

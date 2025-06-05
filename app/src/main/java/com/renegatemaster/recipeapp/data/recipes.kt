@@ -1,8 +1,8 @@
-package com.renegatemaster.recipeapp
+package com.renegatemaster.recipeapp.data
 
-import com.renegatemaster.recipeapp.entities.Category
-import com.renegatemaster.recipeapp.entities.Recipe
-import com.renegatemaster.recipeapp.entities.Ingredient
+import com.renegatemaster.recipeapp.model.Category
+import com.renegatemaster.recipeapp.model.Recipe
+import com.renegatemaster.recipeapp.model.Ingredient
 
 object STUB {
     private val categories: List<Category> = listOf(
