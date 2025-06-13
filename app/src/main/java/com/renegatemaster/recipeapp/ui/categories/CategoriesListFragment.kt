@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp.ui
+package com.renegatemaster.recipeapp.ui.categories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.fragment.app.replace
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.data.STUB
 import com.renegatemaster.recipeapp.databinding.FragmentListCategoriesBinding
+import com.renegatemaster.recipeapp.ui.recipes.recipe_list.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
 

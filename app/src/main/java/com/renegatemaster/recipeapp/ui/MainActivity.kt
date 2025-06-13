@@ -9,6 +9,8 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.ActivityMainBinding
+import com.renegatemaster.recipeapp.ui.categories.CategoriesListFragment
+import com.renegatemaster.recipeapp.ui.recipes.favorites.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null

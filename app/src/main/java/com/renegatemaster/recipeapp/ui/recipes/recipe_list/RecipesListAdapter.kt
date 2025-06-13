@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp.ui
+package com.renegatemaster.recipeapp.ui.recipes.recipe_list
 
 import android.graphics.drawable.Drawable
 import android.util.Log

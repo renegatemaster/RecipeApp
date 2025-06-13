@@ -1,4 +1,4 @@
-package com.renegatemaster.recipeapp.ui
+package com.renegatemaster.recipeapp.ui.recipes.recipe
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -16,6 +16,8 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
 import com.renegatemaster.recipeapp.model.Recipe
+import com.renegatemaster.recipeapp.ui.IngredientsAdapter
+import com.renegatemaster.recipeapp.ui.MethodAdapter
 import com.renegatemaster.recipeapp.utils.Constants
 
 class RecipeFragment : Fragment() {
