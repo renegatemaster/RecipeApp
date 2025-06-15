@@ -9,9 +9,9 @@ import com.renegatemaster.recipeapp.model.Recipe
 class RecipeViewModel : ViewModel() {
 
     data class RecipeState(
-        var recipe: Recipe? = null,
-        var portionsCount: Int = 3,
-        var isInFavorites: Boolean = false,
+        val recipe: Recipe? = null,
+        val portionsCount: Int = 3,
+        val isInFavorites: Boolean = false,
     )
 
     private var _recipeState = MutableLiveData(RecipeState())
@@ -19,6 +19,6 @@ class RecipeViewModel : ViewModel() {
 
     fun init() {
         Log.i("!!!", "${RecipeViewModel::class.simpleName} initialization")
-        _recipeState.value?.isInFavorites = false
+        _recipeState.value = _recipeState.value?.copy(isInFavorites = false) ?: RecipeState()
     }
 }

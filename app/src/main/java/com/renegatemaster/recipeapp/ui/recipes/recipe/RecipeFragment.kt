@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.R
@@ -53,10 +52,9 @@ class RecipeFragment : Fragment() {
         initUI()
         initRecycler()
 
-        val observer = Observer<RecipeViewModel.RecipeState> {
-            Log.i("!!!", "isInFavorites: ${it.isInFavorites}")
+        viewModel.recipeState.observe(viewLifecycleOwner) { recipeState ->
+            Log.i("!!!", "isInFavorites: ${recipeState.isInFavorites}")
         }
-        viewModel.recipeState.observe(viewLifecycleOwner, observer)
         viewModel.init()
     }
 
