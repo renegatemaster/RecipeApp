@@ -1,8 +1,6 @@
 package com.renegatemaster.recipeapp.ui.recipes.recipe
 
-import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,10 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
-import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.ui.IngredientsAdapter
 import com.renegatemaster.recipeapp.ui.MethodAdapter
-import com.renegatemaster.recipeapp.utils.Constants
 
 class RecipeFragment : Fragment() {
 
@@ -28,7 +24,7 @@ class RecipeFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null")
 
-    private var recipe: Recipe? = null
+    private var recipeId: Int = 0
     private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreateView(
@@ -42,20 +38,13 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bundle = arguments
-        recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            bundle?.getParcelable("ARG_RECIPE", Recipe::class.java)
-        } else {
-            bundle?.getParcelable("ARG_RECIPE")
+        arguments?.let {
+            recipeId = it.getInt("ARG_RECIPE_ID", 0)
         }
 
+        viewModel.init(recipeId)
         initUI()
         initRecycler()
-
-        viewModel.recipeState.observe(viewLifecycleOwner) { recipeState ->
-            Log.i("!!!", "isInFavorites: ${recipeState.isInFavorites}")
-        }
-        viewModel.init()
     }
 
     override fun onDestroyView() {
@@ -64,45 +53,42 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        with(binding) {
-            val drawable = try {
-                recipe?.imageUrl?.let {
-                    root.context.assets.open(it).use { inputStream ->
-                        Drawable.createFromStream(inputStream, null)
-                    }
+        viewModel.recipeState.observe(viewLifecycleOwner) { recipeState ->
+            with(binding) {
+                recipeState.recipe?.let {
+                    recipeId = recipeState.recipe.id
                 }
-            } catch (e: Exception) {
-                Log.d("!!!", "Image not found ${recipe?.imageUrl}", e)
-                null
-            }
-            ivRecipe.setImageDrawable(drawable)
+                val drawable = try {
+                    recipeState.recipe?.imageUrl?.let {
+                        root.context.assets.open(it).use { inputStream ->
+                            Drawable.createFromStream(inputStream, null)
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d("!!!", "Image not found ${recipeState.recipe?.imageUrl}", e)
+                    null
+                }
+                ivRecipe.setImageDrawable(drawable)
 
-            with(btnAddToFavorite) {
-                if (isInFavorites()) {
-                    setFavoriteButtonBackground(R.drawable.ic_heart)
-                } else setFavoriteButtonBackground(R.drawable.ic_heart_empty)
-
-                setOnClickListener {
-                    val recipeId: Int = recipe?.id ?: return@setOnClickListener
-                    val favoritesIds = getFavorites()
-                    if (isInFavorites()) {
-                        setFavoriteButtonBackground(R.drawable.ic_heart_empty)
-                        favoritesIds.remove(recipeId.toString())
-                    } else {
+                with(btnAddToFavorite) {
+                    if (recipeState.isInFavorites) {
                         setFavoriteButtonBackground(R.drawable.ic_heart)
-                        favoritesIds.add(recipeId.toString())
-                    }
-                    saveFavorites(favoritesIds)
-                }
-            }
+                    } else setFavoriteButtonBackground(R.drawable.ic_heart_empty)
 
-            tvRecipeTitle.text = recipe?.title
-            tvPortionsQuantity.text = sbPortionsQuantity.progress.toString()
+                    setOnClickListener {
+                        viewModel.onFavoritesClicked(recipeId)
+                    }
+                }
+
+                tvRecipeTitle.text = recipeState.recipe?.title
+                tvPortionsQuantity.text = sbPortionsQuantity.progress.toString()
+            }
         }
     }
 
     private fun initRecycler() {
         with(binding) {
+            val recipe = viewModel.recipeState.value?.recipe
             recipe?.let {
                 rvIngredients.adapter = IngredientsAdapter(it.ingredients)
                 rvMethods.adapter = MethodAdapter(it.method)
@@ -143,37 +129,6 @@ class RecipeFragment : Fragment() {
             divider.isLastItemDecorated = false
             addItemDecoration(divider)
         }
-    }
-
-    private fun saveFavorites(stringSet: Set<String>) {
-        val sharedPrefs = activity?.getSharedPreferences(
-            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
-        ) ?: return
-
-        with(sharedPrefs.edit()) {
-            putStringSet(
-                Constants.SP_FAVORITES_STRING_SET, stringSet
-            )
-            apply()
-        }
-    }
-
-    private fun getFavorites(): HashSet<String> {
-        val sharedPrefs = activity?.getSharedPreferences(
-            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
-        ) ?: return hashSetOf()
-
-        val stringSet = sharedPrefs.getStringSet(
-            Constants.SP_FAVORITES_STRING_SET, hashSetOf<String>()
-        ) ?: hashSetOf<String>()
-
-        val result: HashSet<String> = HashSet(stringSet)
-
-        return result
-    }
-
-    private fun isInFavorites(): Boolean {
-        return recipe?.id?.toString() in getFavorites()
     }
 
     private fun setFavoriteButtonBackground(drawableResId: Int) {
