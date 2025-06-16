@@ -44,12 +44,12 @@ class RecipeViewModel(
     fun onFavoritesClicked(recipeId: Int) {
         val favoritesIds = getFavorites()
         if (recipeState.value?.isInFavorites == true) {
-            _recipeState.value = _recipeState.value?.copy(
+            _recipeState.value = recipeState.value?.copy(
                 isInFavorites = false
             )
             favoritesIds.remove(recipeId.toString())
         } else {
-            _recipeState.value = _recipeState.value?.copy(
+            _recipeState.value = recipeState.value?.copy(
                 isInFavorites = true
             )
             favoritesIds.add(recipeId.toString())

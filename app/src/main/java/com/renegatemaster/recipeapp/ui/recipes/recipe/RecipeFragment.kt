@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
+import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.ui.IngredientsAdapter
 import com.renegatemaster.recipeapp.ui.MethodAdapter
 
@@ -25,6 +26,7 @@ class RecipeFragment : Fragment() {
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null")
 
     private var recipeId: Int = 0
+    private var recipe: Recipe? = null
     private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreateView(
@@ -57,6 +59,7 @@ class RecipeFragment : Fragment() {
             with(binding) {
                 recipeState.recipe?.let {
                     recipeId = recipeState.recipe.id
+                    recipe = recipeState.recipe
                 }
                 val drawable = try {
                     recipeState.recipe?.imageUrl?.let {
@@ -88,7 +91,6 @@ class RecipeFragment : Fragment() {
 
     private fun initRecycler() {
         with(binding) {
-            val recipe = viewModel.recipeState.value?.recipe
             recipe?.let {
                 rvIngredients.adapter = IngredientsAdapter(it.ingredients)
                 rvMethods.adapter = MethodAdapter(it.method)
