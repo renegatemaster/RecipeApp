@@ -58,20 +58,10 @@ class RecipeFragment : Fragment() {
         viewModel.recipeState.observe(viewLifecycleOwner) { recipeState ->
             with(binding) {
                 recipeState.recipe?.let {
-                    recipeId = recipeState.recipe.id
+                    recipeId = it.id
                     recipe = recipeState.recipe
                 }
-                val drawable = try {
-                    recipeState.recipe?.imageUrl?.let {
-                        root.context.assets.open(it).use { inputStream ->
-                            Drawable.createFromStream(inputStream, null)
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.d("!!!", "Image not found ${recipeState.recipe?.imageUrl}", e)
-                    null
-                }
-                ivRecipe.setImageDrawable(drawable)
+                ivRecipe.setImageDrawable(recipeState.recipeImage)
 
                 with(btnAddToFavorite) {
                     if (recipeState.isInFavorites) {
