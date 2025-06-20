@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
-import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.ui.IngredientsAdapter
 import com.renegatemaster.recipeapp.ui.MethodAdapter
 
@@ -26,7 +25,6 @@ class RecipeFragment : Fragment() {
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null")
 
     private var recipeId: Int = 0
-    private var recipe: Recipe? = null
     private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreateView(
@@ -46,7 +44,6 @@ class RecipeFragment : Fragment() {
 
         viewModel.init(recipeId)
         initUI()
-        initRecycler()
     }
 
     override fun onDestroyView() {
@@ -55,11 +52,15 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
+        setDivider(binding.rvIngredients)
+        setDivider(binding.rvMethods)
+
         viewModel.recipeState.observe(viewLifecycleOwner) { recipeState ->
             with(binding) {
                 recipeState.recipe?.let {
                     recipeId = it.id
-                    recipe = recipeState.recipe
+                    rvIngredients.adapter = IngredientsAdapter(it.ingredients)
+                    rvMethods.adapter = MethodAdapter(it.method)
                 }
                 ivRecipe.setImageDrawable(recipeState.recipeImage)
 
@@ -74,38 +75,27 @@ class RecipeFragment : Fragment() {
                 }
 
                 tvRecipeTitle.text = recipeState.recipe?.title
-                tvPortionsQuantity.text = sbPortionsQuantity.progress.toString()
+                tvPortionsQuantity.text = recipeState.portionsCount.toString()
+
+                sbPortionsQuantity.setOnSeekBarChangeListener(
+                    object : SeekBar.OnSeekBarChangeListener {
+                        override fun onProgressChanged(
+                            seekBar: SeekBar?,
+                            progress: Int,
+                            fromUser: Boolean
+                        ) {
+                            viewModel.updatePortionsCount(progress)
+                            (rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(progress)
+                        }
+
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                        }
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                        }
+                    }
+                )
             }
-        }
-    }
-
-    private fun initRecycler() {
-        with(binding) {
-            recipe?.let {
-                rvIngredients.adapter = IngredientsAdapter(it.ingredients)
-                rvMethods.adapter = MethodAdapter(it.method)
-            }
-            setDivider(rvIngredients)
-            setDivider(rvMethods)
-
-            sbPortionsQuantity.setOnSeekBarChangeListener(
-                object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean
-                    ) {
-                        tvPortionsQuantity.text = progress.toString()
-                        (rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(progress)
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-                }
-            )
         }
     }
 

@@ -34,7 +34,7 @@ class RecipeViewModel(
         // TODO("load from network")
 
         val recipe = STUB.getRecipeById(recipeId)
-        val currentState = _recipeState.value ?: RecipeState()
+        val currentState = recipeState.value ?: RecipeState()
         val drawable = try {
             recipe?.imageUrl?.let {
                 application.assets.open(it).use { inputStream ->
@@ -68,6 +68,12 @@ class RecipeViewModel(
             favoritesIds.add(recipeId.toString())
         }
         saveFavorites(favoritesIds)
+    }
+
+    fun updatePortionsCount(portionsCount: Int) {
+        _recipeState.value = recipeState.value?.copy(
+            portionsCount = portionsCount,
+        )
     }
 
     private fun getFavorites(): HashSet<String> {
