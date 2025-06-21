@@ -9,8 +9,14 @@ import com.renegatemaster.recipeapp.model.Ingredient
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class IngredientsAdapter(private val dataSet: List<Ingredient>) :
-    RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+class IngredientsAdapter() : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
+    var dataSet: List<Ingredient> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private var quantity: Int = 3
 
