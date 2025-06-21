@@ -6,8 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.renegatemaster.recipeapp.databinding.ItemMethodBinding
 
-class MethodAdapter(private val dataSet: List<String>) :
-    RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
+class MethodAdapter() : RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
+
+    var dataSet: List<String> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     class ViewHolder(val binding: ItemMethodBinding) : RecyclerView.ViewHolder(binding.root)
 

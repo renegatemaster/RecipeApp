@@ -52,15 +52,22 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        setDivider(binding.rvIngredients)
-        setDivider(binding.rvMethods)
+        with(binding) {
+            rvIngredients.adapter = IngredientsAdapter()
+            rvMethods.adapter = MethodAdapter()
+            setDivider(rvIngredients)
+            setDivider(rvMethods)
+        }
 
         viewModel.recipeState.observe(viewLifecycleOwner) { recipeState ->
             with(binding) {
                 recipeState.recipe?.let {
                     recipeId = it.id
-                    rvIngredients.adapter = IngredientsAdapter(it.ingredients)
-                    rvMethods.adapter = MethodAdapter(it.method)
+                    with (rvIngredients.adapter as IngredientsAdapter) {
+                        dataSet = it.ingredients
+                        updateIngredients(recipeState.portionsCount)
+                    }
+                    (rvMethods.adapter as MethodAdapter).dataSet = it.method
                 }
                 ivRecipe.setImageDrawable(recipeState.recipeImage)
 
@@ -78,22 +85,7 @@ class RecipeFragment : Fragment() {
                 tvPortionsQuantity.text = recipeState.portionsCount.toString()
 
                 sbPortionsQuantity.setOnSeekBarChangeListener(
-                    object : SeekBar.OnSeekBarChangeListener {
-                        override fun onProgressChanged(
-                            seekBar: SeekBar?,
-                            progress: Int,
-                            fromUser: Boolean
-                        ) {
-                            viewModel.updatePortionsCount(progress)
-                            (rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(progress)
-                        }
-
-                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                        }
-
-                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                        }
-                    }
+                    PortionSeekBarListener(viewModel::updatePortionsCount)
                 )
             }
         }
@@ -124,4 +116,20 @@ class RecipeFragment : Fragment() {
             Log.d("!!!", "Can't set background image with id $drawableResId", e)
         }
     }
+}
+
+class PortionSeekBarListener(
+    val onChangeIngredients: (Int) -> Unit,
+) : SeekBar.OnSeekBarChangeListener {
+    override fun onProgressChanged(
+        seekBar: SeekBar?,
+        progress: Int,
+        fromUser: Boolean
+    ) {
+        onChangeIngredients(progress)
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 }
