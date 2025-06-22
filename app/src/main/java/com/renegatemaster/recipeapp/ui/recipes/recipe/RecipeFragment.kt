@@ -26,6 +26,8 @@ class RecipeFragment : Fragment() {
 
     private var recipeId: Int = 0
     private val viewModel: RecipeViewModel by viewModels()
+    private val ingredientsAdapter = IngredientsAdapter()
+    private val methodAdapter = MethodAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +55,8 @@ class RecipeFragment : Fragment() {
 
     private fun initUI() {
         with(binding) {
-            rvIngredients.adapter = IngredientsAdapter()
-            rvMethods.adapter = MethodAdapter()
+            rvIngredients.adapter = ingredientsAdapter
+            rvMethods.adapter = methodAdapter
             setDivider(rvIngredients)
             setDivider(rvMethods)
         }
@@ -63,11 +65,11 @@ class RecipeFragment : Fragment() {
             with(binding) {
                 recipeState.recipe?.let {
                     recipeId = it.id
-                    with (rvIngredients.adapter as IngredientsAdapter) {
+                    with (ingredientsAdapter) {
                         dataSet = it.ingredients
                         updateIngredients(recipeState.portionsCount)
                     }
-                    (rvMethods.adapter as MethodAdapter).dataSet = it.method
+                    methodAdapter.dataSet = it.method
                 }
                 ivRecipe.setImageDrawable(recipeState.recipeImage)
 

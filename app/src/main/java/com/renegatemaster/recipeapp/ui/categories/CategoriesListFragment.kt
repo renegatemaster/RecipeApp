@@ -21,6 +21,7 @@ class CategoriesListFragment : Fragment() {
             ?: throw IllegalStateException("Binding for FragmentListCategoriesBinding must not be null")
 
     private val viewModel: CategoriesListViewModel by viewModels()
+    private val adapter = CategoriesListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +44,6 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun initUI() {
-        val adapter = CategoriesListAdapter()
         adapter.setOnItemClickListener(
             object : CategoriesListAdapter.OnItemClickListener {
                 override fun onItemClick(categoryId: Int) {
@@ -54,7 +54,7 @@ class CategoriesListFragment : Fragment() {
         binding.rvCategories.adapter = adapter
 
         viewModel.categoriesListState.observe(viewLifecycleOwner) { categoriesListState ->
-            (binding.rvCategories.adapter as CategoriesListAdapter).dataSet = categoriesListState.categoriesList
+            adapter.dataSet = categoriesListState.categoriesList
         }
     }
 

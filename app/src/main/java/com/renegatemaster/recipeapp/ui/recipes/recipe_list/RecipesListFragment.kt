@@ -1,8 +1,6 @@
 package com.renegatemaster.recipeapp.ui.recipes.recipe_list
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import com.renegatemaster.recipeapp.R
-import com.renegatemaster.recipeapp.data.STUB
 import com.renegatemaster.recipeapp.databinding.FragmentListRecipesBinding
 import com.renegatemaster.recipeapp.ui.recipes.recipe.RecipeFragment
 
@@ -24,6 +21,7 @@ class RecipesListFragment : Fragment() {
 
     private var categoryId: Int = 0
     private val viewModel: RecipesListViewModel by viewModels()
+    private val adapter = RecipesListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,23 +49,20 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initUI() {
-        with(binding) {
-            val adapter = RecipesListAdapter()
-            adapter.setOnItemClickListener(
-                object : RecipesListAdapter.OnItemClickListener {
-                    override fun onItemClick(recipeId: Int) {
-                        openRecipeByRecipeId(recipeId)
-                    }
+        adapter.setOnItemClickListener(
+            object : RecipesListAdapter.OnItemClickListener {
+                override fun onItemClick(recipeId: Int) {
+                    openRecipeByRecipeId(recipeId)
                 }
-            )
-            rvRecipes.adapter = adapter
-        }
+            }
+        )
+        binding.rvRecipes.adapter = adapter
 
         viewModel.recipesListState.observe(viewLifecycleOwner) { recipesListState ->
             with(binding) {
                 ivRecipes.setImageDrawable(recipesListState.recipesImage)
                 tvRecipesTitle.text = recipesListState.category?.title
-                (rvRecipes.adapter as RecipesListAdapter).dataSet = recipesListState.recipesList
+                adapter.dataSet = recipesListState.recipesList
             }
         }
     }
