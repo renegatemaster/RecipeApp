@@ -1,5 +1,6 @@
 package com.renegatemaster.recipeapp.ui.categories
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.renegatemaster.recipeapp.databinding.ItemCategoryBinding
 import com.renegatemaster.recipeapp.model.Category
 
-class CategoriesListAdapter(private val dataSet: List<Category>) :
-    RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
+class CategoriesListAdapter() : RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
+
+    var dataSet: List<Category> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private var itemClickListener: OnItemClickListener? = null
 

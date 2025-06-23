@@ -1,5 +1,6 @@
 package com.renegatemaster.recipeapp.ui.recipes.recipe_list
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.renegatemaster.recipeapp.databinding.ItemRecipeBinding
 import com.renegatemaster.recipeapp.model.Recipe
 
-class RecipesListAdapter(private val dataSet: List<Recipe>) :
-    RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
+class RecipesListAdapter() : RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
+
+    var dataSet: List<Recipe> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private var itemClickListener: OnItemClickListener? = null
 
