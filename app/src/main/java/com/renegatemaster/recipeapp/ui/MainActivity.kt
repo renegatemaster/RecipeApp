@@ -4,13 +4,9 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.navigation.findNavController
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.ActivityMainBinding
-import com.renegatemaster.recipeapp.ui.categories.CategoriesListFragment
-import com.renegatemaster.recipeapp.ui.recipes.favorites.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -18,16 +14,8 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
-    private val fragmentManager = supportFragmentManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            fragmentManager.commit {
-                setReorderingAllowed(true)
-                add<CategoriesListFragment>(R.id.mainContainer)
-            }
-        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         enableEdgeToEdge()
         _binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,19 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             btnCategories.setOnClickListener {
-                fragmentManager.commit {
-                    replace<CategoriesListFragment>(R.id.mainContainer)
-                    setReorderingAllowed(true)
-                    addToBackStack(null)
-                }
+                findNavController(R.id.nav_host_fragment).navigate(R.id.categoriesListFragment)
             }
 
             btnFavorites.setOnClickListener {
-                fragmentManager.commit {
-                    replace<FavoritesFragment>(R.id.mainContainer)
-                    setReorderingAllowed(true)
-                    addToBackStack(null)
-                }
+                findNavController(R.id.nav_host_fragment).navigate(R.id.favoritesFragment)
             }
         }
     }
