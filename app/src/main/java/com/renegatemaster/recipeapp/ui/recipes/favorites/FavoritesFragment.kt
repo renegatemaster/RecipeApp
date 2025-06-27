@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentFavoritesBinding
-import com.renegatemaster.recipeapp.ui.recipes.recipe.RecipeFragment
 import com.renegatemaster.recipeapp.ui.recipes.recipe_list.RecipesListAdapter
 
-class FavoritesFragment: Fragment() {
+class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
@@ -45,7 +43,7 @@ class FavoritesFragment: Fragment() {
     }
 
     private fun initUI() {
-        with (binding) {
+        with(binding) {
             adapter.setOnItemClickListener(
                 object : RecipesListAdapter.OnItemClickListener {
                     override fun onItemClick(recipeId: Int) {
@@ -59,7 +57,7 @@ class FavoritesFragment: Fragment() {
         }
 
         viewModel.favoritesState.observe(viewLifecycleOwner) { favoritesState ->
-            with (binding) {
+            with(binding) {
                 if (favoritesState.favoritesList.isNotEmpty()) {
                     clNoFavorites.isVisible = false
                     rvFavoriteRecipes.isVisible = true
@@ -74,11 +72,6 @@ class FavoritesFragment: Fragment() {
 
     private fun openRecipeByRecipeId(recipeId: Int) {
         val bundle = bundleOf("ARG_RECIPE_ID" to recipeId)
-
-        parentFragmentManager.commit {
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
+        findNavController().navigate(R.id.recipeFragment, args = bundle)
     }
 }
