@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.renegatemaster.recipeapp.R
+import com.renegatemaster.recipeapp.data.STUB
 import com.renegatemaster.recipeapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
@@ -57,7 +56,11 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val bundle = bundleOf("ARG_CATEGORY_ID" to categoryId)
-        findNavController().navigate(R.id.recipesListFragment, args = bundle)
+        val category = STUB
+            .getCategories().firstOrNull { it.id == categoryId }
+            ?: throw IllegalArgumentException("Couldn't find category with provided id")
+        val action = CategoriesListFragmentDirections
+            .actionCategoriesListFragmentToRecipesListFragment(category)
+        findNavController().navigate(action)
     }
 }

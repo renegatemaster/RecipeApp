@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.renegatemaster.recipeapp.databinding.FragmentListRecipesBinding
+import com.renegatemaster.recipeapp.model.Category
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentListRecipesBinding? = null
@@ -15,9 +17,10 @@ class RecipesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
-    private var categoryId: Int = 0
+    private var category: Category? = null
     private val viewModel: RecipesListViewModel by viewModels()
     private val adapter = RecipesListAdapter()
+    private val args: RecipesListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,11 +34,9 @@ class RecipesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            categoryId = it.getInt("ARG_CATEGORY_ID", 0)
-        }
+        category = args.category
 
-        viewModel.init(categoryId)
+        category?.id?.let { viewModel.init(it) }
         initUI()
     }
 
@@ -64,7 +65,8 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
+        val action = RecipesListFragmentDirections
+            .actionRecipesListFragmentToRecipeFragment(recipeId)
         findNavController().navigate(action)
     }
 }
