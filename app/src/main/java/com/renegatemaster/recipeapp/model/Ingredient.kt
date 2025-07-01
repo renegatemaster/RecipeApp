@@ -1,7 +1,6 @@
 package com.renegatemaster.recipeapp.model
 
 import android.os.Parcelable
-import androidx.annotation.StyleRes
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
