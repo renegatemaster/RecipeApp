@@ -2,9 +2,11 @@ package com.renegatemaster.recipeapp.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Parcelize
-class Recipe(
+data class Recipe(
     val id: Int,
     val title: String,
     val ingredients: List<Ingredient>,

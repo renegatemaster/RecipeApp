@@ -9,15 +9,19 @@ import androidx.navigation.findNavController
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.ActivityMainBinding
 import com.renegatemaster.recipeapp.model.Category
+import com.renegatemaster.recipeapp.model.Recipe
+import com.renegatemaster.recipeapp.utils.Constants
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
+    private val threadPool = Executors.newFixedThreadPool(Constants.NUMBER_OF_THREADS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,22 @@ class MainActivity : AppCompatActivity() {
                 connection.inputStream.bufferedReader().readText()
             )
             Log.i("!!!", "Body: $body")
+
+            val catsIds = body.map { it.id }
+            catsIds.forEach { id ->
+                threadPool.execute {
+                    val url = URL(
+                        "https://recipes.androidsprint.ru/api/category/$id/recipes"
+                    )
+                    val connection = url.openConnection() as HttpURLConnection
+                    connection.connect()
+                    val recipes = Json.decodeFromString<List<Recipe>>(
+                        connection.inputStream.bufferedReader().readText()
+                    )
+                    Log.i("!!!", "Recipes: $recipes")
+                }
+            }
+            threadPool.shutdown()
         }
         thread.start()
 
