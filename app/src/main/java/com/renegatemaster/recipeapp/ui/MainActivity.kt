@@ -12,16 +12,26 @@ import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
 import kotlinx.serialization.json.Json
-import java.net.HttpURLConnection
-import java.net.URL
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
+
     private val threadPool = Executors.newFixedThreadPool(Constants.NUMBER_OF_THREADS)
+    private val client: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        )
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,36 +42,35 @@ class MainActivity : AppCompatActivity() {
 
         Log.i("!!!", "Метод onCreate() выполняется на потоке: ${Thread.currentThread().name}")
 
-        val thread = Thread {
-            val url = URL("https://recipes.androidsprint.ru/api/category")
-            val connection = url.openConnection() as HttpURLConnection
-            connection.connect()
+        threadPool.execute {
+            val requestCategories = Request.Builder()
+                .url("https://recipes.androidsprint.ru/api/category")
+                .build()
+            var categories: List<Category>
 
-            Log.i("!!!", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
-            Log.i("!!!", "responseCode: ${connection.responseCode}")
-            Log.i("!!!", "responseMessage: ${connection.responseMessage}")
-            val body = Json.decodeFromString<List<Category>>(
-                connection.inputStream.bufferedReader().readText()
-            )
-            Log.i("!!!", "Body: $body")
+            client.newCall(requestCategories).execute().use { response ->
+                Log.i("!!!", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
+                Log.i("!!!", "responseCode: ${response.code}")
+                Log.i("!!!", "responseMessage: ${response.message}")
+                categories = Json.decodeFromString<List<Category>>(
+                    response.body?.string() ?: ""
+                )
+                Log.i("!!!", "Body: $categories")
+            }
 
-            val catsIds = body.map { it.id }
+            val catsIds = categories.map { it.id }
             catsIds.forEach { id ->
-                threadPool.execute {
-                    val url = URL(
-                        "https://recipes.androidsprint.ru/api/category/$id/recipes"
-                    )
-                    val connection = url.openConnection() as HttpURLConnection
-                    connection.connect()
+                val requestRecipes = Request.Builder()
+                    .url("https://recipes.androidsprint.ru/api/category/$id/recipes")
+                    .build()
+                client.newCall(requestRecipes).execute().use { response ->
                     val recipes = Json.decodeFromString<List<Recipe>>(
-                        connection.inputStream.bufferedReader().readText()
+                        response.body?.string() ?: ""
                     )
                     Log.i("!!!", "Recipes: $recipes")
                 }
             }
-            threadPool.shutdown()
         }
-        thread.start()
 
         with(binding) {
             btnCategories.setOnClickListener {
@@ -72,5 +81,10 @@ class MainActivity : AppCompatActivity() {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.favoritesFragment)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        threadPool.shutdown()
     }
 }
