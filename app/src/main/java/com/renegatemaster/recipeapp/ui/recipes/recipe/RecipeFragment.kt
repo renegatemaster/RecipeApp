@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -89,6 +90,16 @@ class RecipeFragment : Fragment() {
                 sbPortionsQuantity.setOnSeekBarChangeListener(
                     PortionSeekBarListener(viewModel::updatePortionsCount)
                 )
+            }
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { msg ->
+                Toast.makeText(
+                    requireContext(),
+                    msg,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

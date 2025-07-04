@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.renegatemaster.recipeapp.data.STUB
+import com.renegatemaster.recipeapp.data.RecipesRepository
 import com.renegatemaster.recipeapp.databinding.FragmentListCategoriesBinding
+import com.renegatemaster.recipeapp.utils.Constants
+import java.util.concurrent.Executors
 
 class CategoriesListFragment : Fragment() {
 
@@ -19,6 +22,8 @@ class CategoriesListFragment : Fragment() {
 
     private val viewModel: CategoriesListViewModel by viewModels()
     private val adapter = CategoriesListAdapter()
+    private val repo = RecipesRepository()
+    private val threadPool = Executors.newFixedThreadPool(Constants.NUMBER_OF_THREADS)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +45,11 @@ class CategoriesListFragment : Fragment() {
         _binding = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        threadPool.shutdown()
+    }
+
     private fun initUI() {
         adapter.setOnItemClickListener(
             object : CategoriesListAdapter.OnItemClickListener {
@@ -53,14 +63,29 @@ class CategoriesListFragment : Fragment() {
         viewModel.categoriesListState.observe(viewLifecycleOwner) { categoriesListState ->
             adapter.dataSet = categoriesListState.categoriesList
         }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { msg ->
+                Toast.makeText(
+                    requireContext(),
+                    msg,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val category = STUB
-            .getCategories().firstOrNull { it.id == categoryId }
-            ?: throw IllegalArgumentException("Couldn't find category with provided id")
-        val action = CategoriesListFragmentDirections
-            .actionCategoriesListFragmentToRecipesListFragment(category)
-        findNavController().navigate(action)
+        threadPool.execute {
+            val category = repo
+                .getCategoryById(categoryId)
+                ?: throw IllegalArgumentException("Couldn't find category with provided id")
+            val action = CategoriesListFragmentDirections
+                .actionCategoriesListFragmentToRecipesListFragment(category)
+
+            activity?.runOnUiThread {
+                findNavController().navigate(action)
+            }
+        }
     }
 }

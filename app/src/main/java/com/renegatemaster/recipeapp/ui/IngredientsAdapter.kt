@@ -35,12 +35,16 @@ class IngredientsAdapter() : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>
         val ingredient = dataSet[position]
         with(holder.binding) {
             tvItemIngredientDescription.text = ingredient.description
-            val ingredientQuantity = BigDecimal(ingredient.quantity)
-                .multiply(BigDecimal(quantity))
-                .setScale(1, RoundingMode.HALF_UP)
-                .stripTrailingZeros()
-                .toPlainString()
-            tvItemIngredientQuantity.text = "$ingredientQuantity ${ingredient.unitOfMeasure}"
+            if (ingredient.quantity.toBigDecimalOrNull() != null) {
+                val ingredientQuantity = BigDecimal(ingredient.quantity)
+                    .multiply(BigDecimal(quantity))
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+                tvItemIngredientQuantity.text = "$ingredientQuantity ${ingredient.unitOfMeasure}"
+            } else {
+                tvItemIngredientQuantity.text = "${ingredient.quantity} ${ingredient.unitOfMeasure}"
+            }
         }
     }
 
