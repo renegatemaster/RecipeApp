@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.glide)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.retrofit)
     implementation(libs.logging.interceptor)

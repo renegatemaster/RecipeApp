@@ -3,6 +3,7 @@ package com.renegatemaster.recipeapp.data
 import android.util.Log
 import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
+import com.renegatemaster.recipeapp.utils.Constants
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -12,7 +13,7 @@ import java.io.IOException
 class RecipesRepository {
     private val contentType = "application/json; charset=UTF8".toMediaType()
     private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://recipes.androidsprint.ru/api/")
+        .baseUrl(Constants.BASE_URL)
         .addConverterFactory(Json.asConverterFactory(contentType))
         .build()
     private val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)

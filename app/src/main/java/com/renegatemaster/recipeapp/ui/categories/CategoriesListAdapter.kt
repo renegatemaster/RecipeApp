@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.renegatemaster.recipeapp.databinding.ItemCategoryBinding
 import com.renegatemaster.recipeapp.model.Category
+import com.renegatemaster.recipeapp.utils.Constants
+import com.renegatemaster.recipeapp.utils.GlideConfig
 
 class CategoriesListAdapter() : RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
@@ -41,16 +44,12 @@ class CategoriesListAdapter() : RecyclerView.Adapter<CategoriesListAdapter.ViewH
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = dataSet[position]
         with(holder.binding) {
-            val drawable =
-                try {
-                    root.context.assets.open(category.imageUrl).use { inputStream ->
-                        Drawable.createFromStream(inputStream, null)
-                    }
-                } catch (e: Exception) {
-                    Log.d("!!!", "Image not found: ${category.imageUrl}", e)
-                    null
-                }
-            ivItemCategory.setImageDrawable(drawable)
+            val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${category.imageUrl}"
+            Glide
+                .with(holder.itemView.context)
+                .load(imageUrl)
+                .apply(GlideConfig.sharedOptions)
+                .into(ivItemCategory)
             tvItemCategoryName.text = category.title
             tvItemCategoryDescription.text = category.description
             cvItemCategory.setOnClickListener {
