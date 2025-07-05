@@ -13,11 +13,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.FragmentRecipeBinding
 import com.renegatemaster.recipeapp.ui.IngredientsAdapter
 import com.renegatemaster.recipeapp.ui.MethodAdapter
+import com.renegatemaster.recipeapp.utils.GlideConfig
 
 class RecipeFragment : Fragment() {
 
@@ -72,7 +74,11 @@ class RecipeFragment : Fragment() {
                     }
                     methodAdapter.dataSet = it.method
                 }
-                ivRecipe.setImageDrawable(recipeState.recipeImage)
+                Glide
+                    .with(this@RecipeFragment)
+                    .load(recipeState.imageUrl)
+                    .apply(GlideConfig.sharedOptions)
+                    .into(ivRecipe)
 
                 with(btnAddToFavorite) {
                     if (recipeState.isInFavorites) {

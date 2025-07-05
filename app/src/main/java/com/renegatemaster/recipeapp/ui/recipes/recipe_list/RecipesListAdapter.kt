@@ -1,13 +1,14 @@
 package com.renegatemaster.recipeapp.ui.recipes.recipe_list
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.renegatemaster.recipeapp.databinding.ItemRecipeBinding
 import com.renegatemaster.recipeapp.model.Recipe
+import com.renegatemaster.recipeapp.utils.Constants
+import com.renegatemaster.recipeapp.utils.GlideConfig
 
 class RecipesListAdapter() : RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
 
@@ -41,15 +42,12 @@ class RecipesListAdapter() : RecyclerView.Adapter<RecipesListAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val recipe = dataSet[position]
         with(holder.binding) {
-            val drawable = try {
-                root.context.assets.open(recipe.imageUrl).use { inputStream ->
-                    Drawable.createFromStream(inputStream, null)
-                }
-            } catch (e: Exception) {
-                Log.d("!!!", "Image not found: ${recipe.imageUrl}", e)
-                null
-            }
-            ivItemRecipe.setImageDrawable(drawable)
+            val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${recipe.imageUrl}"
+            Glide
+                .with(holder.itemView.context)
+                .load(imageUrl)
+                .apply(GlideConfig.sharedOptions)
+                .into(ivItemRecipe)
             tvItemRecipeName.text = recipe.title
             cvItemRecipe.setOnClickListener {
                 itemClickListener?.onItemClick(recipe.id)

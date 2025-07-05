@@ -2,7 +2,6 @@ package com.renegatemaster.recipeapp.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -24,7 +23,7 @@ class RecipeViewModel(
         val recipe: Recipe? = null,
         val portionsCount: Int = 3,
         val isInFavorites: Boolean = false,
-        val recipeImage: Drawable? = null
+        val imageUrl: String? = null
     )
 
     private var _recipeState = MutableLiveData(RecipeState())
@@ -44,21 +43,14 @@ class RecipeViewModel(
                 _errorMessage.postValue(Event("Ошибка получения данных"))
                 return@execute
             }
+            val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${recipe.imageUrl}"
             val currentState = recipeState.value ?: RecipeState()
-            val drawable = try {
-                application.assets.open(recipe.imageUrl).use { inputStream ->
-                    Drawable.createFromStream(inputStream, null)
-                }
-            } catch (e: Exception) {
-                Log.d("!!!", "Image not found ${recipe.imageUrl}", e)
-                null
-            }
 
             val newState = currentState.copy(
                 recipe = recipe,
                 portionsCount = currentState.portionsCount,
                 isInFavorites = recipeId.toString() in getFavorites(),
-                recipeImage = drawable,
+                imageUrl = imageUrl,
             )
 
             _recipeState.postValue(newState)
