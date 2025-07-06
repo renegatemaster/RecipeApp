@@ -6,18 +6,18 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.renegatemaster.recipeapp.data.RecipesRepository
 import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
 import com.renegatemaster.recipeapp.utils.Event
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
     private val repo = RecipesRepository()
-    private val threadPool = Executors.newFixedThreadPool(Constants.NUMBER_OF_THREADS)
 
     data class FavoritesState(
         val favoritesList: List<Recipe> = emptyList(),
@@ -35,11 +35,11 @@ class FavoritesViewModel(
 
     private fun loadFavorites() {
         val favoritesIds: List<Int> = getFavorites()
-        threadPool.execute {
+        viewModelScope.launch {
             val favoritesList = repo.getRecipesByIds(favoritesIds)
             if (favoritesList == null) {
                 _errorMessage.postValue(Event("Ошибка получения данных"))
-                return@execute
+                return@launch
             }
 
             val currentState = favoritesState.value ?: FavoritesState()
@@ -50,11 +50,6 @@ class FavoritesViewModel(
 
             _favoritesState.postValue(newState)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        threadPool.shutdown()
     }
 
     private fun getFavorites(): List<Int> {

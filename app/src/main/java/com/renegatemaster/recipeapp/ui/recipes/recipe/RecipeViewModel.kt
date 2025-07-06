@@ -6,18 +6,18 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.renegatemaster.recipeapp.data.RecipesRepository
 import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
 import com.renegatemaster.recipeapp.utils.Event
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
 
 class RecipeViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
     private val repo = RecipesRepository()
-    private val threadPool = Executors.newFixedThreadPool(Constants.NUMBER_OF_THREADS)
 
     data class RecipeState(
         val recipe: Recipe? = null,
@@ -37,11 +37,11 @@ class RecipeViewModel(
     }
 
     private fun loadRecipe(recipeId: Int) {
-        threadPool.execute {
+        viewModelScope.launch {
             val recipe = repo.getRecipeById(recipeId)
             if (recipe == null) {
                 _errorMessage.postValue(Event("Ошибка получения данных"))
-                return@execute
+                return@launch
             }
             val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${recipe.imageUrl}"
             val currentState = recipeState.value ?: RecipeState()
@@ -55,11 +55,6 @@ class RecipeViewModel(
 
             _recipeState.postValue(newState)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        threadPool.shutdown()
     }
 
     fun onFavoritesClicked(recipeId: Int) {
