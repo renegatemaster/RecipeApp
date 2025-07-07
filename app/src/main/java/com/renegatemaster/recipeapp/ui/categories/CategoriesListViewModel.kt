@@ -25,6 +25,8 @@ class CategoriesListViewModel(
     val categoriesListState: LiveData<CategoriesListState> get() = _categoriesListState
     private val _errorMessage = MutableLiveData<Event<String>>()
     val errorMessage: LiveData<Event<String>> = _errorMessage
+    private val _navigateEvent = MutableLiveData<Event<Category>>()
+    val navigateEvent: LiveData<Event<Category>> = _navigateEvent
 
     fun init() {
         Log.i("!!!", "${CategoriesListViewModel::class.simpleName} initialization")
@@ -46,6 +48,16 @@ class CategoriesListViewModel(
             )
 
             _categoriesListState.postValue(newState)
+        }
+    }
+
+    fun openRecipesByCategoryId(categoryId: Int) {
+        viewModelScope.launch {
+            val category = repo
+                .getCategoryById(categoryId)
+                ?: throw IllegalArgumentException("Couldn't find category with provided id")
+
+            _navigateEvent.postValue(Event(category))
         }
     }
 }
