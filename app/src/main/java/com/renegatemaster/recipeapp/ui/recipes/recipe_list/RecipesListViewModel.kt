@@ -1,7 +1,6 @@
 package com.renegatemaster.recipeapp.ui.recipes.recipe_list
 
 import android.app.Application
-import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -23,7 +22,7 @@ class RecipesListViewModel(
     data class RecipesListState(
         val category: Category? = null,
         val recipesList: List<Recipe> = emptyList(),
-        val recipesImage: Drawable? = null
+        val imageUrl: String? = null
     )
 
     private var _recipesListState = MutableLiveData(RecipesListState())
@@ -44,22 +43,13 @@ class RecipesListViewModel(
                 _errorMessage.postValue(Event("Ошибка получения данных"))
                 return@execute
             }
-
-            val drawable = try {
-                application.assets.open(category.imageUrl).use { inputStream ->
-                    Drawable.createFromStream(inputStream, null)
-                }
-            } catch (e: Exception) {
-                Log.d("!!!", "Image not found ${category.imageUrl}", e)
-                null
-            }
-
+            val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${category.imageUrl}"
             val currentState = recipesListState.value ?: RecipesListState()
 
             val newState = currentState.copy(
                 category = category,
                 recipesList = recipesList,
-                recipesImage = drawable,
+                imageUrl = imageUrl,
             )
 
             _recipesListState.postValue(newState)

@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.renegatemaster.recipeapp.databinding.FragmentListRecipesBinding
 import com.renegatemaster.recipeapp.model.Category
+import com.renegatemaster.recipeapp.utils.GlideConfig
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentListRecipesBinding? = null
@@ -58,7 +60,11 @@ class RecipesListFragment : Fragment() {
 
         viewModel.recipesListState.observe(viewLifecycleOwner) { recipesListState ->
             with(binding) {
-                ivRecipes.setImageDrawable(recipesListState.recipesImage)
+                Glide
+                    .with(this@RecipesListFragment)
+                    .load(recipesListState.imageUrl)
+                    .apply(GlideConfig.sharedOptions)
+                    .into(ivRecipes)
                 tvRecipesTitle.text = recipesListState.category?.title
                 adapter.dataSet = recipesListState.recipesList
             }
