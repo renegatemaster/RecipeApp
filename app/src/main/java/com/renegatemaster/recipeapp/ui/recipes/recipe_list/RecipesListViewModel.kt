@@ -5,19 +5,19 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.renegatemaster.recipeapp.data.RecipesRepository
 import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
 import com.renegatemaster.recipeapp.utils.Event
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
 
 class RecipesListViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
     private val repo = RecipesRepository()
-    private val threadPool = Executors.newFixedThreadPool(Constants.NUMBER_OF_THREADS)
 
     data class RecipesListState(
         val category: Category? = null,
@@ -36,12 +36,12 @@ class RecipesListViewModel(
     }
 
     private fun loadRecipesList(categoryId: Int) {
-        threadPool.execute {
+        viewModelScope.launch {
             val category = repo.getCategoryById(categoryId)
             val recipesList = repo.getRecipesByCategoryId(categoryId)
             if (category == null || recipesList == null) {
                 _errorMessage.postValue(Event("Ошибка получения данных"))
-                return@execute
+                return@launch
             }
             val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${category.imageUrl}"
             val currentState = recipesListState.value ?: RecipesListState()
@@ -54,10 +54,5 @@ class RecipesListViewModel(
 
             _recipesListState.postValue(newState)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        threadPool.shutdown()
     }
 }
