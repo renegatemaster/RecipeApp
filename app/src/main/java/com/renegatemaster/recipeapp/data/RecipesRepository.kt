@@ -1,6 +1,8 @@
 package com.renegatemaster.recipeapp.data
 
+import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
@@ -12,13 +14,29 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.io.IOException
 
-class RecipesRepository {
+class RecipesRepository(context: Context) {
     private val contentType = "application/json; charset=UTF8".toMediaType()
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Constants.BASE_URL)
         .addConverterFactory(Json.asConverterFactory(contentType))
         .build()
     private val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)
+    private val db: RecipeAppDatabase = Room.databaseBuilder(
+        context.applicationContext,
+        RecipeAppDatabase::class.java,
+        "database-name",
+    ).build()
+    private val categoriesDao = db.categoriesDao()
+
+    suspend fun getCategoriesFromCache(): List<Category> =
+        withContext(Dispatchers.IO) {
+            categoriesDao.getAll()
+        }
+
+    suspend fun insertCategoriesIntoCache(vararg categories: Category) =
+        withContext(Dispatchers.IO) {
+        categoriesDao.insertAll(*categories)
+    }
 
     suspend fun getRecipeById(id: Int): Recipe? =
         withContext(Dispatchers.IO) {

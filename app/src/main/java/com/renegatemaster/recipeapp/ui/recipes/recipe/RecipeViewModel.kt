@@ -17,7 +17,7 @@ class RecipeViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
-    private val repo = RecipesRepository()
+    private val repo = RecipesRepository(application)
 
     data class RecipeState(
         val recipe: Recipe? = null,

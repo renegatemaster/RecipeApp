@@ -15,7 +15,7 @@ class CategoriesListViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
-    private val repo = RecipesRepository()
+    private val repo = RecipesRepository(application)
 
     data class CategoriesListState(
         val categoriesList: List<Category> = emptyList(),
@@ -35,19 +35,28 @@ class CategoriesListViewModel(
 
     private fun loadCategories() {
         viewModelScope.launch {
+            val categoriesListCache = repo.getCategoriesFromCache()
+
+            val currentStateCache = categoriesListState.value ?: CategoriesListState()
+
+            val newStateCache = currentStateCache.copy(
+                categoriesList = categoriesListCache,
+            )
+
+            _categoriesListState.postValue(newStateCache)
+
             val categoriesList = repo.getCategories()
             if (categoriesList == null) {
                 _errorMessage.postValue(Event("Ошибка получения данных"))
                 return@launch
             }
 
-            val currentState = categoriesListState.value ?: CategoriesListState()
-
-            val newState = currentState.copy(
+            val newState = newStateCache.copy(
                 categoriesList = categoriesList,
             )
 
             _categoriesListState.postValue(newState)
+            repo.insertCategoriesIntoCache(*categoriesList.toTypedArray())
         }
     }
 

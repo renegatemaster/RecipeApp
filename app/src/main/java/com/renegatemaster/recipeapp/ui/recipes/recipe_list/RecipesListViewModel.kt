@@ -17,7 +17,7 @@ class RecipesListViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
-    private val repo = RecipesRepository()
+    private val repo = RecipesRepository(application)
 
     data class RecipesListState(
         val category: Category? = null,
