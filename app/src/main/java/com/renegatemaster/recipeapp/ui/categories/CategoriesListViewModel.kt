@@ -56,7 +56,7 @@ class CategoriesListViewModel(
             )
 
             _categoriesListState.postValue(newState)
-            repo.insertCategoriesIntoCache(*categoriesList.toTypedArray())
+            repo.insertCategoriesIntoCache(categoriesList)
         }
     }
 

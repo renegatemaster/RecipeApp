@@ -25,18 +25,56 @@ class RecipesRepository(context: Context) {
         context.applicationContext,
         RecipeAppDatabase::class.java,
         "database-name",
-    ).build()
+        )
+        .fallbackToDestructiveMigration(false)
+        .build()
+
     private val categoriesDao = db.categoriesDao()
+    private val recipesDao = db.recipesDao()
+
+    suspend fun getRecipesByCategoryIdFromCache(categoryId: Int): List<Recipe> =
+        withContext(Dispatchers.IO) {
+            recipesDao.getRecipesByCategoryId(categoryId).ifEmpty {
+                val recipes = getRecipesByCategoryId(categoryId)
+                    ?: throw Exception("Ошибка получения данных")
+                insertRecipesListIntoCache(recipes, categoryId)
+                recipes
+            }
+        }
+
+    suspend fun insertRecipesListIntoCache(recipes: List<Recipe>, categoryId: Int) =
+        withContext(Dispatchers.IO) {
+            val recipesWithCategory = recipes.map { recipe ->
+                recipe.copy(categoryId = categoryId)
+            }
+            recipesDao.insertAll(*recipesWithCategory.toTypedArray())
+        }
+
+    suspend fun getCategoryByIdFromCache(categoryId: Int): Category =
+        withContext(Dispatchers.IO) {
+            val categoryCache = categoriesDao.getById(categoryId)
+            if (categoryCache == null) {
+                val category = getCategoryById(categoryId)
+                    ?: throw Exception("Ошибка получения данных")
+                insertCategoriesIntoCache(listOf(category))
+                category
+            } else categoryCache
+        }
 
     suspend fun getCategoriesFromCache(): List<Category> =
         withContext(Dispatchers.IO) {
-            categoriesDao.getAll()
+            categoriesDao.getAll().ifEmpty {
+                val categories = getCategories()
+                    ?: throw Exception("Ошибка получения данных")
+                insertCategoriesIntoCache(categories)
+                categories
+            }
         }
 
-    suspend fun insertCategoriesIntoCache(vararg categories: Category) =
+    suspend fun insertCategoriesIntoCache(categories: List<Category>) =
         withContext(Dispatchers.IO) {
-        categoriesDao.insertAll(*categories)
-    }
+            categoriesDao.insertAll(*categories.toTypedArray())
+        }
 
     suspend fun getRecipeById(id: Int): Recipe? =
         withContext(Dispatchers.IO) {

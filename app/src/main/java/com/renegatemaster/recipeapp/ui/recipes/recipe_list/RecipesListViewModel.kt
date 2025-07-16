@@ -37,6 +37,19 @@ class RecipesListViewModel(
 
     private fun loadRecipesList(categoryId: Int) {
         viewModelScope.launch {
+            val categoryCache = repo.getCategoryByIdFromCache(categoryId)
+            val recipesListCache = repo.getRecipesByCategoryIdFromCache(categoryId)
+            val imageUrlCache = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${categoryCache.imageUrl}"
+            val currentStateCache = recipesListState.value ?: RecipesListState()
+
+            val newStateCache = currentStateCache.copy(
+                category = categoryCache,
+                recipesList = recipesListCache,
+                imageUrl = imageUrlCache,
+            )
+
+            _recipesListState.postValue(newStateCache)
+
             val category = repo.getCategoryById(categoryId)
             val recipesList = repo.getRecipesByCategoryId(categoryId)
             if (category == null || recipesList == null) {
@@ -44,9 +57,8 @@ class RecipesListViewModel(
                 return@launch
             }
             val imageUrl = "${Constants.BASE_URL}${Constants.IMAGES_ENDPOINT}${category.imageUrl}"
-            val currentState = recipesListState.value ?: RecipesListState()
 
-            val newState = currentState.copy(
+            val newState = newStateCache.copy(
                 category = category,
                 recipesList = recipesList,
                 imageUrl = imageUrl,
