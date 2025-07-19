@@ -11,6 +11,9 @@ interface CategoriesDao {
     @Query("SELECT * FROM category")
     fun getAll(): List<Category>
 
+    @Query("SELECT * FROM category WHERE id = :categoryId LIMIT 1")
+    fun getById(categoryId: Int): Category?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg categories: Category)
 }
