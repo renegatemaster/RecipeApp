@@ -25,12 +25,22 @@ class RecipesRepository(context: Context) {
         context.applicationContext,
         RecipeAppDatabase::class.java,
         "database-name",
-        )
+    )
         .fallbackToDestructiveMigration(false)
         .build()
 
     private val categoriesDao = db.categoriesDao()
     private val recipesDao = db.recipesDao()
+
+    suspend fun getRecipeByFavorite(): List<Recipe> =
+        withContext(Dispatchers.IO) {
+            recipesDao.getFavoriteRecipes()
+        }
+
+    suspend fun insertRecipeIntoCache(recipe: Recipe) =
+        withContext(Dispatchers.IO) {
+            recipesDao.insertAll(recipe)
+        }
 
     suspend fun getRecipesByCategoryIdFromCache(categoryId: Int): List<Recipe> =
         withContext(Dispatchers.IO) {

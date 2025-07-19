@@ -86,7 +86,7 @@ class RecipeFragment : Fragment() {
                     } else setFavoriteButtonBackground(R.drawable.ic_heart_empty)
 
                     setOnClickListener {
-                        viewModel.onFavoritesClicked(recipeId)
+                        viewModel.onFavoritesClicked()
                     }
                 }
 
