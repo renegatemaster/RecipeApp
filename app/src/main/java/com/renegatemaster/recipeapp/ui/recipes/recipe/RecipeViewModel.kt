@@ -1,7 +1,6 @@
 package com.renegatemaster.recipeapp.ui.recipes.recipe
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -39,6 +38,7 @@ class RecipeViewModel(
     private fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
             val recipe = repo.getRecipeById(recipeId)
+            val favoritesIds = repo.getRecipeByFavorite().map { it.id }
             if (recipe == null) {
                 _errorMessage.postValue(Event("Ошибка получения данных"))
                 return@launch
@@ -49,7 +49,7 @@ class RecipeViewModel(
             val newState = currentState.copy(
                 recipe = recipe,
                 portionsCount = currentState.portionsCount,
-                isInFavorites = recipeId.toString() in getFavorites(),
+                isInFavorites = recipeId in favoritesIds,
                 imageUrl = imageUrl,
             )
 
@@ -57,52 +57,30 @@ class RecipeViewModel(
         }
     }
 
-    fun onFavoritesClicked(recipeId: Int) {
-        val favoritesIds = getFavorites()
-        if (recipeState.value?.isInFavorites == true) {
-            _recipeState.value = recipeState.value?.copy(
-                isInFavorites = false
+    fun onFavoritesClicked() {
+        viewModelScope.launch {
+            val state = requireNotNull(recipeState.value) {
+                "${RecipeViewModel::class.simpleName}.onFavoritesClicked(): state is null"
+            }
+            val recipe = requireNotNull(state.recipe) {
+                "${RecipeViewModel::class.simpleName}.onFavoritesClicked(): recipe is null"
+            }
+
+            val isFavorite = !state.isInFavorites
+            val newRecipe = recipe.copy(
+                isFavorite = isFavorite
             )
-            favoritesIds.remove(recipeId.toString())
-        } else {
-            _recipeState.value = recipeState.value?.copy(
-                isInFavorites = true
+            _recipeState.value = state.copy(
+                recipe = newRecipe,
+                isInFavorites = isFavorite
             )
-            favoritesIds.add(recipeId.toString())
+            repo.insertRecipeIntoCache(newRecipe)
         }
-        saveFavorites(favoritesIds)
     }
 
     fun updatePortionsCount(portionsCount: Int) {
         _recipeState.value = recipeState.value?.copy(
             portionsCount = portionsCount,
         )
-    }
-
-    private fun getFavorites(): HashSet<String> {
-        val sharedPrefs = application.getSharedPreferences(
-            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
-        ) ?: return hashSetOf()
-
-        val stringSet = sharedPrefs.getStringSet(
-            Constants.SP_FAVORITES_STRING_SET, hashSetOf<String>()
-        ) ?: hashSetOf<String>()
-
-        val result: HashSet<String> = HashSet(stringSet)
-
-        return result
-    }
-
-    private fun saveFavorites(stringSet: Set<String>) {
-        val sharedPrefs = application.getSharedPreferences(
-            Constants.SP_FAVORITES_KEY, Context.MODE_PRIVATE
-        ) ?: return
-
-        with(sharedPrefs.edit()) {
-            putStringSet(
-                Constants.SP_FAVORITES_STRING_SET, stringSet
-            )
-            apply()
-        }
     }
 }

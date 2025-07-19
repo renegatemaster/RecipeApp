@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
 
-@Database(entities = [Category::class, Recipe::class], version = 2)
+@Database(entities = [Category::class, Recipe::class], version = 3)
 abstract class RecipeAppDatabase : RoomDatabase() {
     abstract fun categoriesDao(): CategoriesDao
     abstract fun recipesDao(): RecipesDao
