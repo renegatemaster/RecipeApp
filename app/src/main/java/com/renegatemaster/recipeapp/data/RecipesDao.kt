@@ -9,8 +9,11 @@ import com.renegatemaster.recipeapp.model.Recipe
 @Dao
 interface RecipesDao {
     @Query("SELECT * FROM recipe WHERE categoryId = :categoryId")
-    fun getRecipesByCategoryId(categoryId: Int): List<Recipe>
+    suspend fun getRecipesByCategoryId(categoryId: Int): List<Recipe>
+
+    @Query("SELECT * FROM recipe WHERE isFavorite = 1")
+    suspend fun getFavoriteRecipes(): List<Recipe>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg recipes: Recipe)
+    suspend fun insertAll(vararg recipes: Recipe)
 }

@@ -21,6 +21,7 @@ data class Recipe(
     val method: List<String>,
     val imageUrl: String,
     @Transient val categoryId: Int? = null,
+    @Transient val isFavorite: Boolean = false,
 ) : Parcelable
 
 class Converters {
