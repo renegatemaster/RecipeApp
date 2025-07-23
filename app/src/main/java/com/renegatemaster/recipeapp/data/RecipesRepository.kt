@@ -42,6 +42,11 @@ class RecipesRepository(context: Context) {
             recipesDao.insertAll(recipe)
         }
 
+    suspend fun updateRecipeFavoriteStatus(id: Int, isFavorite: Boolean) =
+        withContext(Dispatchers.IO) {
+            recipesDao.updateFavoriteStatus(id, isFavorite)
+        }
+
     suspend fun getRecipesByCategoryIdFromCache(categoryId: Int): List<Recipe> =
         withContext(Dispatchers.IO) {
             recipesDao.getRecipesByCategoryId(categoryId).ifEmpty {

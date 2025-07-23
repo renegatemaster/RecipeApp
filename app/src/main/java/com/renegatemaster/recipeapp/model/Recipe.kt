@@ -1,6 +1,7 @@
 package com.renegatemaster.recipeapp.model
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -21,7 +22,7 @@ data class Recipe(
     val method: List<String>,
     val imageUrl: String,
     @Transient val categoryId: Int? = null,
-    @Transient val isFavorite: Boolean = false,
+    @ColumnInfo(name = "isFavorite") @Transient val isFavorite: Boolean = false,
 ) : Parcelable
 
 class Converters {
