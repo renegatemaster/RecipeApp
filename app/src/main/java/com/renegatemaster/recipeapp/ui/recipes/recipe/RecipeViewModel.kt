@@ -74,7 +74,7 @@ class RecipeViewModel(
                 recipe = newRecipe,
                 isInFavorites = isFavorite
             )
-            repo.insertRecipeIntoCache(newRecipe)
+            repo.updateRecipeFavoriteStatus(recipe.id, isFavorite)
         }
     }
 
