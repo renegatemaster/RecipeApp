@@ -8,9 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.renegatemaster.recipeapp.data.RecipesRepository
 import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoriesListViewModel(
+@HiltViewModel
+class CategoriesListViewModel @Inject constructor(
     private val repo: RecipesRepository,
 ) : ViewModel() {
 

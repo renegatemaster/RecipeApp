@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import com.renegatemaster.recipeapp.R
 import com.renegatemaster.recipeapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding

@@ -10,9 +10,12 @@ import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
 import com.renegatemaster.recipeapp.utils.Constants
 import com.renegatemaster.recipeapp.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipesListViewModel(
+@HiltViewModel
+class RecipesListViewModel @Inject constructor(
     private val repo: RecipesRepository,
 ) : ViewModel() {
 
