@@ -1,10 +1,9 @@
 package com.renegatemaster.recipeapp.ui.categories
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.renegatemaster.recipeapp.data.RecipesRepository
 import com.renegatemaster.recipeapp.model.Category
@@ -12,10 +11,8 @@ import com.renegatemaster.recipeapp.utils.Event
 import kotlinx.coroutines.launch
 
 class CategoriesListViewModel(
-    private val application: Application
-) : AndroidViewModel(application) {
-
-    private val repo = RecipesRepository(application)
+    private val repo: RecipesRepository,
+) : ViewModel() {
 
     data class CategoriesListState(
         val categoriesList: List<Category> = emptyList(),
