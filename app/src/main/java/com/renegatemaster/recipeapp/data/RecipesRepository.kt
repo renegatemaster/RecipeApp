@@ -3,16 +3,19 @@ package com.renegatemaster.recipeapp.data
 import android.util.Log
 import com.renegatemaster.recipeapp.model.Category
 import com.renegatemaster.recipeapp.model.Recipe
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class RecipesRepository(
+class RecipesRepository @Inject constructor(
     private val recipesDao: RecipesDao,
     private val categoriesDao: CategoriesDao,
     private val service: RecipeApiService,
-    private val ioDispatcher: CoroutineContext,
 ) {
+
+    private val ioDispatcher: CoroutineContext = Dispatchers.IO
 
     suspend fun getRecipeByFavorite(): List<Recipe> =
         withContext(ioDispatcher) {
